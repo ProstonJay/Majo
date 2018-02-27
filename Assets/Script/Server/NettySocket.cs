@@ -82,14 +82,12 @@ public class NettySocket : MonoBehaviour
             {
                 GameEvent.DoNetSocket(2);
                 GameEvent.DoMsgEvent("连接服务器超时");
-                Debug.Log("连接服务器超时");
             }
         }
-        catch(System.Exception)
+        catch(System.Net.Sockets.SocketException e)
         {
             GameEvent.DoNetSocket(2);
-            GameEvent.DoMsgEvent("连接服务器失败");
-            Debug.Log("连接服务器失败\r\n");
+            GameEvent.DoMsgEvent("连接服务器失败 e="+e.ErrorCode);
         }
     }
 
@@ -105,11 +103,9 @@ public class NettySocket : MonoBehaviour
             GameEvent.DoMsgTipEvent("线程启动成功，准备登录");
             //通知UI，继续登录
             GameEvent.DoSocketConnetEvent("connet");
-            Debug.Log("连接成功 clientSocket=" + clientSocket.Blocking);
         }else{
           
             GameEvent.DoMsgEvent("连接服务器失败");
-            Debug.Log("连接失败");
         }
         GameEvent.DoNetSocket(2);
     }
@@ -136,7 +132,9 @@ public class NettySocket : MonoBehaviour
     {
         if (clientSocket.Connected==false)
         {
-            Debug.Log("Socket 断开连接");
+            Debug.Log("发数据：Sokcet 断开=" + clientSocket.Connected);
+            GameEvent.DoMsgEvent("发数据：Sokcet 断开=" + clientSocket.Connected);
+            return;
         }
         try
         {
@@ -150,10 +148,9 @@ public class NettySocket : MonoBehaviour
             msg.CopyTo(data, 4);
             clientSocket.Send(data);
         }
-        catch (System.Exception e)
+        catch (System.Net.Sockets.SocketException e)
         {
-            GameEvent.DoMsgTipEvent("发送数据网络异常");
-            Debug.Log("发送数据网络异常 Exception caught: " + e);
+            GameEvent.DoMsgEvent("发送数据网络异常 e="+e.ErrorCode);
         }
 
 
@@ -168,10 +165,9 @@ public class NettySocket : MonoBehaviour
         Debug.Log("有数据1");
         while (true)
         {
-            Debug.Log(" clientSocket.Connected=" + clientSocket.Connected);
             if (clientSocket.Connected==false)
             {
-                Debug.Log("服务器连接已经断开");
+                GameEvent.DoMsgEvent("收数据：Sokcet 断开 =" + clientSocket.Connected);
                 break;
             }
             try
@@ -236,10 +232,11 @@ public class NettySocket : MonoBehaviour
                 GameEvent.DoNetSocket(2);
             }
             catch (System.Net.Sockets.SocketException e) {
+                GameEvent.DoMsgEvent("收数据异常 e=" + e.ErrorCode+ "Connected="+ clientSocket.Connected);
                 Debug.Log(" clientSocket.Connected=" + clientSocket.Connected);
-                Debug.Log("接收数据网络异常 Exception caught: "+e.ErrorCode+e);
-                Debug.Log("接收数据网络异常 Exception caught: " + e.SocketErrorCode + e);
-                Debug.Log("接收数据网络异常 Exception caught: " + e.NativeErrorCode + e);
+                Debug.Log("接收数据网络异常 Exception caught: "+e.ErrorCode);
+                Debug.Log("接收数据网络异常 Exception caught: " + e.SocketErrorCode);
+                Debug.Log("接收数据网络异常 Exception caught: " + e.NativeErrorCode);
                 clientSocket.Shutdown(SocketShutdown.Both);
                 clientSocket.Close();
                 clientSocket.Disconnect(true);
