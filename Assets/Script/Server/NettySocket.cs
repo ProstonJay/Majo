@@ -15,7 +15,7 @@ public class NettySocket : MonoBehaviour
     //public bool IsConnected = false;
 
 
-    public static string ipArderrs = "192.168.0.108";
+    public static string ipArderrs = "192.168.0.111";
 
     private Thread threadReceive;
 
@@ -102,6 +102,7 @@ public class NettySocket : MonoBehaviour
             threadReceive = new Thread(ReceiveMessage);
             threadReceive.IsBackground = true;
             threadReceive.Start();
+            GameEvent.DoMsgTipEvent("线程启动成功，准备登录");
             //通知UI，继续登录
             GameEvent.DoSocketConnetEvent("connet");
             Debug.Log("连接成功 clientSocket=" + clientSocket.Blocking);
@@ -139,6 +140,7 @@ public class NettySocket : MonoBehaviour
         }
         try
         {
+            GameEvent.DoMsgTipEvent("发送请求");
             GameEvent.DoNetSocket(1);
             Debug.Log("发消息给服务器");
             byte[] msg = Serial(socketModel);
@@ -150,6 +152,7 @@ public class NettySocket : MonoBehaviour
         }
         catch (System.Exception e)
         {
+            GameEvent.DoMsgTipEvent("发送数据网络异常");
             Debug.Log("发送数据网络异常 Exception caught: " + e);
         }
 

@@ -612,7 +612,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 128fedfcd90ff754ea2c4ffa30c3252e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  logo: {fileID: 0}
 --- !u!1 &444694772
 GameObject:
   m_ObjectHideFlags: 0
@@ -994,6 +993,7 @@ MonoBehaviour:
   maxPoint: 0
   zhuangjia: 0
   round: 0
+  mjLeft: 0
   positon: 0
   myGold: 0
   myHandMj: 
@@ -1042,7 +1042,7 @@ Transform:
   m_Children:
   - {fileID: 55314321}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1665905042
 GameObject:
@@ -1160,7 +1160,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1774654969
 GameObject:

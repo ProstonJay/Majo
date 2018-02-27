@@ -67,7 +67,7 @@ public class LoginView : MonoBehaviour
     //服务器连接上,发送登录请求
     private void loginRequst()
     {
-      
+        GameEvent.DoMsgTipEvent("请求登录数据");
         //
         Debug.Log(SystemInfo.deviceUniqueIdentifier + "SystemInfo.deviceUniqueIdentifier");
         string deviceUID = SystemInfo.deviceType+"|"+ SystemInfo.deviceUniqueIdentifier;
