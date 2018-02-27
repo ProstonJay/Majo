@@ -143,7 +143,7 @@ public class CreatRoomWindow : MonoBehaviour {
         J2Toggle.isOn = true;
         F24Toggle.isOn = true;
 
-        MaxRound = 4;
+        MaxRound = 2;
         MaxPoint = 24;
 
         zhuangjia.isOn = true;

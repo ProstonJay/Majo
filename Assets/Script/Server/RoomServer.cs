@@ -79,7 +79,7 @@ public class RoomServer
         int pos = list[0];
         int mj = list[1];
         int fangpaoPos = list[2];
-        string sendPos = "";
+        string sendPos = String.Empty;
         if (pos == GameInfo.Instance.positon)
         {
             sendPos = "bot";

@@ -1,2 +1,0 @@
-E:\Majo\Majo\Temp\UnityVS_obj\Debug\Majo.csprojResolveAssemblyReference.cache
-E:\Majo\Majo\Temp\UnityVS_obj\Debug\Majo.csproj.CoreCompileInputs.cache

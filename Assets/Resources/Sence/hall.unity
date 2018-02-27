@@ -1035,7 +1035,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1537415204606446, guid: a5ac48e879d885e4aab7ca08c4534d83, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1773260818953024, guid: a5ac48e879d885e4aab7ca08c4534d83, type: 2}
       propertyPath: m_IsActive
@@ -6629,7 +6629,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1087778625}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.14256632, y: -1.1016277, z: -565}
+  m_LocalPosition: {x: 0, y: 0, z: -565}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1309262040}
@@ -8246,7 +8246,7 @@ Camera:
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0
+    x: -0
     y: 0
     width: 1
     height: 1
