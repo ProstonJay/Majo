@@ -234,15 +234,15 @@ public class RoomServer
     //摸牌
     public void MoPai(SocketModel socketModel)
     {
-        GameEvent.DoMsgTipEvent("收到摸牌数据");
+        //GameEvent.DoMsgTipEvent(" 收到摸牌数据");
         List<string> msgList = socketModel.GetMessage();
         //如果是自己摸牌
         Debug.Log("摸牌的位置=" + int.Parse(msgList[0]));
         //Int64 mj = int.Parse(msgList[0]);
         if (int.Parse(msgList[0]) == GameInfo.Instance.positon)
         {
-            Debug.Log("是自己摸牌 摸的牌= " + int.Parse(msgList[1]));
-            GameEvent.DoMsgTipEvent("是自己摸牌 摸的牌= " + int.Parse(msgList[1]));
+            //Debug.Log("是自己摸牌 摸的牌= " + int.Parse(msgList[1]));
+            //GameEvent.DoMsgTipEvent("是自己摸牌 摸的牌= " + int.Parse(msgList[1]));
             //摸起的牌放到手牌队列里
             int mj = int.Parse(msgList[1]);
             GameInfo.Instance.putMjtoHandList(mj);

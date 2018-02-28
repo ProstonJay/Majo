@@ -24,6 +24,7 @@ public class NettySocket : MonoBehaviour
     {
         if (Instance == null)
         {
+            Debug.Log("NettySocket Instance == this");
             Instance = this;
             DontDestroyOnLoad(transform.gameObject);
         }
@@ -31,6 +32,7 @@ public class NettySocket : MonoBehaviour
         {
             if (Instance != this)
             {
+                Debug.Log("NettySocket Instance ！= this");
                 Destroy(transform.gameObject);
             }
         }

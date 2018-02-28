@@ -46,11 +46,11 @@ public class RoomAction : MonoBehaviour {
         if (actlist != null)
         {
             Debug.Log("操作列表 actlist=" + actlist + "长度=" + actlist.Count);
-            GameEvent.DoMsgTipEvent("操作列表 actlist=" + actlist + "长度=" + actlist.Count);
+           // GameEvent.DoMsgTipEvent("操作列表 actlist=" + actlist + "长度=" + actlist.Count);
         }
         else
         {
-            GameEvent.DoMsgTipEvent("操作列表 actlist 为 null");
+            //GameEvent.DoMsgTipEvent("操作列表 actlist 为 null");
             Debug.Log("操作列表 actlist 为 null");
         }
       
@@ -79,7 +79,7 @@ public class RoomAction : MonoBehaviour {
             int count = actlist.Count;
             if (count > 0)
             {
-                GameEvent.DoMsgEvent("操作列表 update actlist=" + actlist + "长度=" + actlist.Count);
+                //GameEvent.DoMsgEvent("操作列表 update actlist=" + actlist + "长度=" + actlist.Count);
                 doAction(actlist);
                 actlist.Clear();
             }
@@ -87,7 +87,7 @@ public class RoomAction : MonoBehaviour {
         }
         else
         {
-            GameEvent.DoMsgTipEvent("操作列表 update actlist 为 null");
+            //GameEvent.DoMsgTipEvent("操作列表 update actlist 为 null");
         }
         //吃胡
         if (fangpaoPos > 0)

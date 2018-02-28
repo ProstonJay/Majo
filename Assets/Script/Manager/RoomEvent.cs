@@ -230,6 +230,7 @@ public class RoomEvent : MonoBehaviour {
     {
         if (Instance == null)
         {
+            Debug.Log(" RoomEvent Instance == this");
             Instance = this;
             DontDestroyOnLoad(this.transform.gameObject);
         }
@@ -237,6 +238,7 @@ public class RoomEvent : MonoBehaviour {
         {
             if (Instance != this)
             {
+                Debug.Log("RoomEvent Instance ！= this");
                 Destroy(transform.gameObject);
             }
         }

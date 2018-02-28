@@ -10,16 +10,16 @@ public class Action  {
     [ProtoMember(2)]
     private List<int> actionData;//打出的牌
 
-    public Action()
-    {
+    //public Action()
+    //{
 
-    }
+    //}
 
-    public Action(int aType, List<int> adata)
-    {
-        this.actionType = aType;
-        this.actionData = adata;
-    }
+    //public Action(int aType, List<int> adata)
+    //{
+    //    this.actionType = aType;
+    //    this.actionData = adata;
+    //}
 
     public int getActionType()
     {
