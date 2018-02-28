@@ -120,7 +120,7 @@ public class roomAnimator : MonoBehaviour
         Debug.Log("自摸动画 pos="+ pos+ "plist.Count = " + plist.Count);
         this.zimoPos = pos;
         this.plist = list;
-        if(plist!=null&& plist.Count > 0)
+        if(plist!=null)
         {
             zimohuType = plist[0].getHupai();
         }

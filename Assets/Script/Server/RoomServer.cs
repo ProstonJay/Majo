@@ -285,17 +285,19 @@ public class RoomServer
         //3如果没人操作，设置指示方向
         if (stats == 0)
         {
+            Debug.Log("设置指示方向");
             RoomEvent.DoPlayerDiction(int.Parse(list[2]));
         }
         //如果是玩家自己出的牌就不继续判断读取数据了
         if (int.Parse(list[0]) == GameInfo.Instance.positon)
         {
-
+            Debug.Log("如果是玩家自己出的牌就不继续判断读取数据了");
             return;
         }
         //4.看看自己是否可以可以吃,碰 等操作;
         List<int> mylist = socketModel.GetData();
-        if (list != null)
+        Debug.Log("mylist=" + mylist);
+        if (mylist != null)
         {  
             //如果有操作,通知UI显示相关按键
             Debug.Log("自己有操作=" + mylist[0]);

@@ -61,12 +61,16 @@ public class RoomAction : MonoBehaviour {
 
     void Update()
     {
-        Debug.Log("actlist.Count.GetType=" + actlist.Count.GetType()+ "actlist.Count.GetTypeCode= " + actlist.Count.GetTypeCode());
-        int count = actlist.Count;
-        if (count > 0)
+    
+        if (actlist!=null)
         {
-            doAction(actlist);
-            actlist.Clear();
+            int count = actlist.Count;
+            if (count > 0)
+            {
+                doAction(actlist);
+                actlist.Clear();
+            }
+
         }
         //吃胡
         if (fangpaoPos > 0)
