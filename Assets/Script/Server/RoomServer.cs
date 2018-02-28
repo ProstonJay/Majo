@@ -234,19 +234,21 @@ public class RoomServer
     //摸牌
     public void MoPai(SocketModel socketModel)
     {
-
+        GameEvent.DoMsgTipEvent("收到摸牌数据");
         List<string> msgList = socketModel.GetMessage();
         //如果是自己摸牌
         Debug.Log("摸牌的位置=" + int.Parse(msgList[0]));
+        //Int64 mj = int.Parse(msgList[0]);
         if (int.Parse(msgList[0]) == GameInfo.Instance.positon)
         {
             Debug.Log("是自己摸牌 摸的牌= " + int.Parse(msgList[1]));
+            GameEvent.DoMsgTipEvent("是自己摸牌 摸的牌= " + int.Parse(msgList[1]));
             //摸起的牌放到手牌队列里
             int mj = int.Parse(msgList[1]);
             GameInfo.Instance.putMjtoHandList(mj);
             //广播给UI显示
             GameEvent.DoMoPai(mj);
-            Debug.Log("摸牌=" + mj);
+            Debug.Log("摸牌==" + mj);
             //是否能,杠,糊
             List<int> list = socketModel.GetData();
             RoomEvent.DoActionList(list);
@@ -292,18 +294,19 @@ public class RoomServer
             return;
         }
         //4.看看自己是否可以可以吃,碰 等操作;
-        List<int> actionlist = socketModel.GetData();
-        if (actionlist!=null&&actionlist.Count > 0)
-        {
+        List<int> mylist = socketModel.GetData();
+        if (list != null)
+        {  
             //如果有操作,通知UI显示相关按键
-            Debug.Log("自己有操作=" + actionlist[0]);
+            Debug.Log("自己有操作=" + mylist[0]);
             //如果Action有数据,可以杠
-            if (socketModel.GetAdata() != null && socketModel.GetAdata().Count > 0)
+            List<Action> actionlist = socketModel.GetAdata();
+            if (actionlist != null)
             {
-                Debug.Log("可以杠牌=" + socketModel.GetAdata().Count);
-                GameInfo.Instance.gangList = socketModel.GetAdata();//杠的数据保存在INFO, 选择牌型后清空
+                Debug.Log("可以杠牌=" + actionlist.Count);
+                GameInfo.Instance.gangList = actionlist;//杠的数据保存在INFO, 选择牌型后清空
             }
-            RoomEvent.DoActionList(actionlist);
+            RoomEvent.DoActionList(mylist);
         }
         else
         {

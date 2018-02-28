@@ -61,7 +61,9 @@ public class RoomAction : MonoBehaviour {
 
     void Update()
     {
-        if (actlist != null && actlist.Count > 0)
+        Debug.Log("actlist.Count.GetType=" + actlist.Count.GetType()+ "actlist.Count.GetTypeCode= " + actlist.Count.GetTypeCode());
+        int count = actlist.Count;
+        if (count > 0)
         {
             doAction(actlist);
             actlist.Clear();
@@ -132,7 +134,8 @@ public class RoomAction : MonoBehaviour {
     //显示本轮可操作类型
     public void doAction(List<int> list)
     {
-        for (int i = 0; i < list.Count; i++)
+        int count = list.Count;
+        for (int i = 0; i < count; i++)
         {
             switch (list[i])
             {
@@ -258,7 +261,8 @@ public class RoomAction : MonoBehaviour {
         posStr = "";
         mjStr = "";
         //
-        if (ChiPaiList != null && ChiPaiList.Count > 0)
+    
+        if (ChiPaiList != null )
         {
             foreach (GameObject item in ChiPaiList)
             {
@@ -397,7 +401,7 @@ public class RoomAction : MonoBehaviour {
         GangBtn.gameObject.SetActive(false);
         HuBtn.gameObject.SetActive(false);
         GuoBtn.gameObject.SetActive(false);
-        if(ChiPaiList!=null&& ChiPaiList.Count > 0)
+        if(ChiPaiList!=null)
         {
             foreach(GameObject item in ChiPaiList)
             {
