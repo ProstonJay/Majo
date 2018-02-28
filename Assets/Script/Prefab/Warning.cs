@@ -23,12 +23,13 @@ public class Warning : MonoBehaviour
         root = this.transform;
         //获取场景中按钮的引用
         textssss = root.Find("MsgTxt").GetComponent<Text>();
+        Debug.Log("warning = "+value);
         textssss.text = value;
         //如果WarningModel设置了延迟时间  
         if (value != null)
         {
             //delay时间后执行close函数  
-            Invoke("close", 2);
+            Invoke("close", 10);
         }
         gameObject.SetActive(true);
     }

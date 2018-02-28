@@ -139,7 +139,7 @@ public class NettySocket : MonoBehaviour
         try
         {
             GameEvent.DoMsgTipEvent("发送请求");
-            GameEvent.DoNetSocket(1);
+           // GameEvent.DoNetSocket(1);
             Debug.Log("发消息给服务器");
             byte[] msg = Serial(socketModel);
             //消息体结构：消息体长度+消息体

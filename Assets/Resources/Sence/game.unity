@@ -9452,7 +9452,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1537415204606446, guid: a5ac48e879d885e4aab7ca08c4534d83, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114417107898367000, guid: a5ac48e879d885e4aab7ca08c4534d83,
         type: 2}
@@ -9475,6 +9475,51 @@ Prefab:
     - target: {fileID: 1137175012542560, guid: a5ac48e879d885e4aab7ca08c4534d83, type: 2}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224311605148069476, guid: a5ac48e879d885e4aab7ca08c4534d83,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 17.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 224311605148069476, guid: a5ac48e879d885e4aab7ca08c4534d83,
+        type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 928.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 224311605148069476, guid: a5ac48e879d885e4aab7ca08c4534d83,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 154.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 224450133265967258, guid: a5ac48e879d885e4aab7ca08c4534d83,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 10.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 224450133265967258, guid: a5ac48e879d885e4aab7ca08c4534d83,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 168.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 224450133265967258, guid: a5ac48e879d885e4aab7ca08c4534d83,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: -3.675
+      objectReference: {fileID: 0}
+    - target: {fileID: 224450133265967258, guid: a5ac48e879d885e4aab7ca08c4534d83,
+        type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 391.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 114143543535010238, guid: a5ac48e879d885e4aab7ca08c4534d83,
+        type: 2}
+      propertyPath: m_Text
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 224311605148069476, guid: a5ac48e879d885e4aab7ca08c4534d83,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 8.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a5ac48e879d885e4aab7ca08c4534d83, type: 2}

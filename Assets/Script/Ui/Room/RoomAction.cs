@@ -45,11 +45,13 @@ public class RoomAction : MonoBehaviour {
         actlist = list;
         if (actlist != null)
         {
+            Debug.Log("操作列表 actlist=" + actlist + "长度=" + actlist.Count);
             GameEvent.DoMsgTipEvent("操作列表 actlist=" + actlist + "长度=" + actlist.Count);
         }
         else
         {
             GameEvent.DoMsgTipEvent("操作列表 actlist 为 null");
+            Debug.Log("操作列表 actlist 为 null");
         }
       
     }
@@ -73,10 +75,11 @@ public class RoomAction : MonoBehaviour {
    
         if (actlist!=null)
         {
-            GameEvent.DoMsgEvent("操作列表 update actlist=" + actlist + "长度=" + actlist.Count);
+          
             int count = actlist.Count;
             if (count > 0)
             {
+                GameEvent.DoMsgEvent("操作列表 update actlist=" + actlist + "长度=" + actlist.Count);
                 doAction(actlist);
                 actlist.Clear();
             }
