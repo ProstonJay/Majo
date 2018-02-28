@@ -43,6 +43,15 @@ public class RoomAction : MonoBehaviour {
     private void ActionListEvent(List<int> list)
     {
         actlist = list;
+        if (actlist != null)
+        {
+            GameEvent.DoMsgTipEvent("操作列表 actlist=" + actlist + "长度=" + actlist.Count);
+        }
+        else
+        {
+            GameEvent.DoMsgTipEvent("操作列表 actlist 为 null");
+        }
+      
     }
 
     //自摸
@@ -61,9 +70,10 @@ public class RoomAction : MonoBehaviour {
 
     void Update()
     {
-    
+   
         if (actlist!=null)
         {
+            GameEvent.DoMsgEvent("操作列表 update actlist=" + actlist + "长度=" + actlist.Count);
             int count = actlist.Count;
             if (count > 0)
             {
@@ -71,6 +81,10 @@ public class RoomAction : MonoBehaviour {
                 actlist.Clear();
             }
 
+        }
+        else
+        {
+            GameEvent.DoMsgTipEvent("操作列表 update actlist 为 null");
         }
         //吃胡
         if (fangpaoPos > 0)
