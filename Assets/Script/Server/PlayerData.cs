@@ -41,23 +41,23 @@ public class PlayerData  {
     //    Debug.Log("PlayerData 没有初始化数据11111111111111111111111111111111111111111111111111111111111111111111111111111111111");
     //}
 
-    //public PlayerData(int uid,string pn, int pi,int zj, int hupai, List<int> hl, List<Action> al, List<int> ol = null,int wg=0,int zg=0,int mg=0,int ag=0,int hp=0,int fp =0)
-    //{
-    //    this.userId = uid;
-    //    this.playerName = pn;
-    //    this.playerIcon = pi;
-    //    this.hupai = hupai;
-    //    this.handlist = hl;
-    //    this.actionlist = al;
-    //    this.outlist = ol;
-    //    this.winGold = wg;
-    //    this.zhiGang = zg;
-    //    this.mingGang = mg;
-    //    this.anGang = ag;
-    //    this.huPaicCunt = hp;
-    //    this.fangPaoCunt = fp;
-    //    Debug.Log("PlayerData 有初始化数据222222222222222222222222222222222222222222222222222222222222222222222222222222");
-    //}
+    public PlayerData(int uid=0, string pn="", int pi=0, int zj=0, int hupai=0, List<int> hl = null, List<Action> al=null, List<int> ol = null, int wg = 0, int zg = 0, int mg = 0, int ag = 0, int hp = 0, int fp = 0)
+    {
+        this.userId = uid;
+        this.playerName = pn;
+        this.playerIcon = pi;
+        this.zhuangjia = zj;
+        this.hupai = hupai;
+        this.handlist = hl;
+        this.actionlist = al;
+        this.outlist = ol;
+        this.winGold = wg;
+        this.zhiGang = zg;
+        this.mingGang = mg;
+        this.anGang = ag;
+        this.huPaicCunt = hp;
+        this.fangPaoCunt = fp;
+    }
 
     public int getPlayerIcon()
     {

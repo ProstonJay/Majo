@@ -15,11 +15,11 @@ public class Action  {
 
     //}
 
-    //public Action(int aType, List<int> adata)
-    //{
-    //    this.actionType = aType;
-    //    this.actionData = adata;
-    //}
+    public Action(int aType, List<int> adata)
+    {
+        this.actionType = aType;
+        this.actionData = adata;
+    }
 
     public int getActionType()
     {
