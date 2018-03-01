@@ -252,11 +252,11 @@ public class RoomServer
             List<int> list = socketModel.GetData();
             RoomEvent.DoActionList(list);
             //如果Action有数据,可以杠
-            //if (socketModel.GetAdata() != null && socketModel.GetAdata().Count > 0)
-            //{
-            //    Debug.Log("可以杠牌=" + socketModel.GetAdata().Count);
-            //    GameInfo.Instance.gangList = socketModel.GetAdata();//杠的数据保存在INFO, 选择牌型后清空
-            //}
+            if (socketModel.GetAdata() != null && socketModel.GetAdata().Count > 0)
+            {
+                Debug.Log("可以杠牌=" + socketModel.GetAdata().Count);
+                GameInfo.Instance.gangList = socketModel.GetAdata();//杠的数据保存在INFO, 选择牌型后清空
+            }
         }
         //不管是谁摸，更新牌的数量
         Debug.Log("剩余牌的数量=" + socketModel.GetCommand());
