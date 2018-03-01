@@ -238,10 +238,9 @@ public class RoomServer
         List<string> msgList = socketModel.GetMessage();
         //如果是自己摸牌
         Debug.Log("摸牌的位置=" + int.Parse(msgList[0]));
-        //Int64 mj = int.Parse(msgList[0]);
         if (int.Parse(msgList[0]) == GameInfo.Instance.positon)
         {
-            //Debug.Log("是自己摸牌 摸的牌= " + int.Parse(msgList[1]));
+            Debug.Log("是自己摸牌 摸的牌= " + int.Parse(msgList[1]));
             //GameEvent.DoMsgTipEvent("是自己摸牌 摸的牌= " + int.Parse(msgList[1]));
             //摸起的牌放到手牌队列里
             int mj = int.Parse(msgList[1]);
@@ -253,11 +252,11 @@ public class RoomServer
             List<int> list = socketModel.GetData();
             RoomEvent.DoActionList(list);
             //如果Action有数据,可以杠
-            if (socketModel.GetAdata() != null && socketModel.GetAdata().Count > 0)
-            {
-                Debug.Log("可以杠牌=" + socketModel.GetAdata().Count);
-                GameInfo.Instance.gangList = socketModel.GetAdata();//杠的数据保存在INFO, 选择牌型后清空
-            }
+            //if (socketModel.GetAdata() != null && socketModel.GetAdata().Count > 0)
+            //{
+            //    Debug.Log("可以杠牌=" + socketModel.GetAdata().Count);
+            //    GameInfo.Instance.gangList = socketModel.GetAdata();//杠的数据保存在INFO, 选择牌型后清空
+            //}
         }
         //不管是谁摸，更新牌的数量
         Debug.Log("剩余牌的数量=" + socketModel.GetCommand());

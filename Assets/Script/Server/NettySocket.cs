@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NettySocket : MonoBehaviour
 {
@@ -19,12 +20,10 @@ public class NettySocket : MonoBehaviour
 
     private Thread threadReceive;
 
-
     void Awake()
     {
         if (Instance == null)
         {
-            Debug.Log("NettySocket Instance == this");
             Instance = this;
             DontDestroyOnLoad(transform.gameObject);
         }
@@ -32,7 +31,6 @@ public class NettySocket : MonoBehaviour
         {
             if (Instance != this)
             {
-                Debug.Log("NettySocket Instance ！= this");
                 Destroy(transform.gameObject);
             }
         }
@@ -164,17 +162,17 @@ public class NettySocket : MonoBehaviour
     ///</summary>  
     private void ReceiveMessage()
     {
-        Debug.Log("有数据1");
         while (true)
         {
             if (clientSocket.Connected==false)
             {
-                GameEvent.DoMsgEvent("收数据：Sokcet 断开 =" + clientSocket.Connected);
+               // LogTxt.text += "收数据：Sokcet 断开 =" + clientSocket.Connected + "/n";
+                //GameEvent.DoMsgEvent("收数据：Sokcet 断开 =" + clientSocket.Connected);
                 break;
             }
             try
             {
-                Debug.Log("有数据3");
+                //LogTxt.text += "接收数据/n";
                 //接受消息头（消息校验码4字节 + 消息长度4字节 + 身份ID8字节 + 主命令4字节 + 子命令4字节 + 加密方式4字节 = 28字节）  
                 int HeadLength = 4;
                 //存储消息头的所有字节数  
@@ -203,7 +201,8 @@ public class NettySocket : MonoBehaviour
                 byte[] bytes = new byte[4];
                 System.Array.Copy(recvBytesHead, bytes, 4);
                 int BodyLength = BytesToInt(bytes, 0);
-                Debug.Log("数据包长度=" + BodyLength);
+                //LogTxt.text += "数据包长度 = " + BodyLength+"/n";
+                //Debug.Log("数据包长度=" + BodyLength);
                 //存储消息体的所有字节数  
                 byte[] recvBytesBody = new byte[BodyLength];
                 //如果当前需要接收的字节数大于0，则循环接收  
@@ -227,8 +226,9 @@ public class NettySocket : MonoBehaviour
                     BodyLength -= iBytesBody;
                 }
                 //一个消息包接收完毕，解析消息包  
-                //UnpackData(recvBytesHead, recvBytesBody);
-                Debug.Log("数据读取完了，可以解包了 数据长度 recvBytesBody = " + recvBytesBody.Length);
+                //GameEvent.DoMsgEvent("数据读取完了，可以解包了 数据长度 recvBytesBody = " + recvBytesBody.Length);
+                //LogTxt.text += "数据读取完了，可以解包了 数据长度 recvBytesBody = " + recvBytesBody.Length + "/n";
+                // Debug.Log("数据读取完了，可以解包了 数据长度 recvBytesBody = " + recvBytesBody.Length);
                 SocketModel message = DeSerial(recvBytesBody);
                 ServerManager.GetInstance().ReceiveMsg(message);
                 GameEvent.DoNetSocket(2);

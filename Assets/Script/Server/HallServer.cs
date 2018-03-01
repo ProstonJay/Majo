@@ -98,8 +98,8 @@ public class HallServer  {
             Debug.Log("开房成功,最大番数=" + GameInfo.Instance.maxPoint);
         }
         else
-        {
-            Debug.Log("开房失败");
+        { 
+            Debug.Log("开房失败 socketModel.GetComman="+ socketModel.GetCommand());
             GameEvent.DoMsgEvent("开房失败!");
         }
     }
