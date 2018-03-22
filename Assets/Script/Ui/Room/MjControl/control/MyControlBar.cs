@@ -160,7 +160,7 @@ public class MyControlBar : MonoBehaviour {
 
     private IEnumerator mopai()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
         Debug.Log("本轮操作权是自己,告诉服务器摸牌");
         //告诉服务器摸牌
         SocketModel MoPaiRequset = new SocketModel();
@@ -199,7 +199,6 @@ public class MyControlBar : MonoBehaviour {
     //碰牌
     public void pengPai(int mj)
     {
-        Debug.Log("碰牌111111111111111111");
         int count = 0;
         for (int i = 0; i < CardList.Count; i++)
         {
@@ -282,6 +281,7 @@ public class MyControlBar : MonoBehaviour {
     //暗杠
     private void anGang(int mj)
     {
+        Debug.Log("暗杠MYControl——mj=" + mj);
         int count = 0;
         for (int i = 0; i < CardList.Count; i++)
         {
@@ -308,7 +308,7 @@ public class MyControlBar : MonoBehaviour {
 
     private IEnumerator ShowA()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(2f);
         moGangPai();
     }
 
@@ -329,7 +329,6 @@ public class MyControlBar : MonoBehaviour {
 
     public void resetAll()
     {
-        Debug.Log("初始化牌 ");
         if (CardList.Count > 0)
         {
             foreach (GameObject item in CardList)
@@ -343,23 +342,46 @@ public class MyControlBar : MonoBehaviour {
     // Use this for initializationint
     void Start()
     {
-        //List<int> list1 = new List<int>();
-        //list1.Add(14); 
-        //for (int i = 0; i < list1.Count; i++)
-        //{
-        //    string mj = list1[i].ToString();
-        //    //最后显示  
-        //    GameObject mjCard = Instantiate(Resources.Load("Prefab/GameObject_mj_my")) as GameObject;
-        //    mjCard.transform.localPosition = new Vector3(i * -83, 0, 0);
-        //    mjCard.transform.SetParent(this.transform, false);
-        //    mjCard.GetComponent<Mj_my>().setPic(mj);
-        //    mjCard.GetComponent<Mj_my>().mjId = mj;
-        //    mjCard.name = mjLocId.ToString();
-        //    mjLocId++;
-        //    CardList.Add(mjCard);
-        //}
     }
-
+    //重连
+    public void reJoinHnadList(int mjId,int stat=0)
+    {
+        for (int i = 0; i < GameInfo.Instance.myHandMj.Count; i++)
+        {
+            string mj = GameInfo.Instance.myHandMj[i].ToString();
+            //最后显示  
+            GameObject mjCard = Instantiate(Resources.Load("Prefab/GameObject_mj_my")) as GameObject;
+            mjCard.transform.localPosition = new Vector3(i * -83, 0, 0);
+            mjCard.transform.SetParent(this.transform, false);
+            mjCard.GetComponent<Mj_my>().setPic(mj);
+            mjCard.GetComponent<Mj_my>().mjId = mj;
+            mjCard.name = mjLocId.ToString();
+            mjLocId++;
+            CardList.Add(mjCard);
+            Debug.Log("mjCard =", mjCard);
+            Debug.Log("CardList =" + CardList.Count);
+        }
+        if (GameInfo.Instance.positon == GameInfo.Instance.actionFlag&& stat==0)
+        {
+            if (mjId > 0)
+            {
+                MoPai(mjId);
+            }
+            else
+            {
+                //告诉服务器摸牌
+                SocketModel MoPaiRequset = new SocketModel();
+                MoPaiRequset.SetMainCmd(ProtocolMC.Main_Cmd_ROOM);
+                MoPaiRequset.SetSubCmd(ProtocolSC.Sub_Cmd_GAME_MOPAI);
+                MoPaiRequset.SetCommand(0);
+                List<int> datalist = new List<int>();
+                datalist.Add(GameInfo.Instance.roomId);//房间号
+                datalist.Add(GameInfo.Instance.positon);//位置
+                MoPaiRequset.SetData(datalist);
+                NettySocket.Instance.SendMsg(MoPaiRequset);//发送这条消息给服务器
+            }
+        }
+    }
     /// <summary>
     ///初始化发牌
     /// </summary>
@@ -368,7 +390,6 @@ public class MyControlBar : MonoBehaviour {
         for (int i = 0; i <GameInfo.Instance.myHandMj.Count; i++)
         {
             string mj = GameInfo.Instance.myHandMj[i].ToString();
-            Debug.Log("初始化自己的牌 "+i+"=" + mj);
             //最后显示  
             GameObject mjCard = Instantiate(Resources.Load("Prefab/GameObject_mj_my")) as GameObject;
             mjCard.transform.localPosition = new Vector3(i * -83, 0, 0);
@@ -398,7 +419,6 @@ public class MyControlBar : MonoBehaviour {
     //摸牌
     public void MoPai(int data)
     {
-        Debug.Log("自己摸牌");
         //处理一个摸牌
         GameObject mj14 = Instantiate(Resources.Load("Prefab/GameObject_mj_my")) as GameObject;
         mj14.transform.localPosition = new Vector3(130, 0, 0);
@@ -454,17 +474,16 @@ public class MyControlBar : MonoBehaviour {
                             ChuPaiRequset.SetData(datalist);
                             NettySocket.Instance.SendMsg(ChuPaiRequset);//发送这条消息给服务器
                             //设置不可以操作了
-                            GameInfo.Instance.PlayFlag = false;
-                     
+                            GameInfo.Instance.PlayFlag = false;                   
                     }
 
                 }
 
-             }
-                 else
-                 {
-                    CardList[i].GetComponent<Mj_my>().setDown();
-                 }
+            }
+            else
+            {
+                CardList[i].GetComponent<Mj_my>().setDown();
+            }
         }
     }
     //重置牌位置

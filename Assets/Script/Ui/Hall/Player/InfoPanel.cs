@@ -62,7 +62,7 @@ public class InfoPanel : MonoBehaviour {
         //
         idText.text = GameInfo.Instance.UserID.ToString();
         nameText.text = GameInfo.Instance.UserName;
-        Sprite sp = Resources.Load("Texture/hall/head/head_" + GameInfo.Instance.UserIcon, typeof(Sprite)) as Sprite;
+        Sprite sp = Resources.Load("Sprite/head/head_" + GameInfo.Instance.UserIcon, typeof(Sprite)) as Sprite;
         iconImage.sprite = sp;
 
         string str;
@@ -74,7 +74,7 @@ public class InfoPanel : MonoBehaviour {
         {
             str = "nv";
         }
-        Sprite sp1 = Resources.Load("Texture/hall/head/"+ str , typeof(Sprite)) as Sprite;
+        Sprite sp1 = Resources.Load("Sprite/head/" + str , typeof(Sprite)) as Sprite;
         sexImage.sprite = sp1;
 
     }
@@ -111,7 +111,7 @@ public class InfoPanel : MonoBehaviour {
 
         if (newIcon != "")
         {
-            Sprite sp = Resources.Load("Texture/hall/head/head_" + newIcon, typeof(Sprite)) as Sprite;
+            Sprite sp = Resources.Load("Sprite/head/head_" + newIcon, typeof(Sprite)) as Sprite;
             iconImage.sprite = sp;
 
             string str;
@@ -123,7 +123,7 @@ public class InfoPanel : MonoBehaviour {
             {
                 str = "nv";
             }
-            Sprite sp1 = Resources.Load("Texture/hall/head/" + str, typeof(Sprite)) as Sprite;
+            Sprite sp1 = Resources.Load("Sprite/head/" + str, typeof(Sprite)) as Sprite;
             sexImage.sprite = sp1;
 
             newIcon = "";

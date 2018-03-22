@@ -129,7 +129,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: c82f66e5928e8514cae28678ad3a5f08, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a16dbb3649ee81d4a955edf2876b597d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -150,18 +150,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FPS: 5
   SpriteFrames:
-  - {fileID: 21300000, guid: c82f66e5928e8514cae28678ad3a5f08, type: 3}
-  - {fileID: 21300000, guid: 2894aa8d3cbabdb4fa53ff098f56df20, type: 3}
-  - {fileID: 21300000, guid: 6319c7f0a9fe17f408ef4716b54c985a, type: 3}
-  - {fileID: 21300000, guid: 87cb2494bdc8c514e934474a731ca723, type: 3}
-  - {fileID: 21300000, guid: 015967356c5cd85488dffc9c607a21da, type: 3}
-  - {fileID: 21300000, guid: 0d7eebce71c985948ab7b27eba5ec7ac, type: 3}
-  - {fileID: 21300000, guid: aaf5c27b427646f46817cb4d9269b3cb, type: 3}
-  - {fileID: 21300000, guid: 672f2968184987e4ea0e33049c5118ca, type: 3}
+  - {fileID: 21300000, guid: a16dbb3649ee81d4a955edf2876b597d, type: 3}
+  - {fileID: 21300000, guid: 1664caac3cf1ffe4e931593828cb68cf, type: 3}
+  - {fileID: 21300000, guid: ed48c8aa021084545aa02da7d96e443e, type: 3}
+  - {fileID: 21300000, guid: 1872ea79207600041a328f10ce5e9073, type: 3}
+  - {fileID: 21300000, guid: 1812f15f294e0e744ade5cc877756f66, type: 3}
+  - {fileID: 21300000, guid: 02fef441dd46b4a4c9a990306ccc89f4, type: 3}
+  - {fileID: 21300000, guid: 34e40a8b6697a4041a15a7957ce619a1, type: 3}
+  - {fileID: 21300000, guid: fd468599cc5302248a3613e19c590586, type: 3}
+  - {fileID: 21300000, guid: 3d8dfd18fed7dcc409a2a7e3071f0122, type: 3}
+  - {fileID: 21300000, guid: 58c279845f028ba4ca985b20b43c52a1, type: 3}
+  - {fileID: 21300000, guid: 322378d58349b2e4084e34042c1586ea, type: 3}
+  - {fileID: 21300000, guid: 99bcf316922d8854489f5f062ea4f4fc, type: 3}
   IsPlaying: 0
   Foward: 1
   AutoPlay: 1
   Loop: 0
+  UseSetNativeSize: 0
 --- !u!222 &222353962942887936
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -176,13 +181,13 @@ RectTransform:
   m_GameObject: {fileID: 1174743252346764}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.00000047684, y: -50}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: 20, y: -30}
+  m_SizeDelta: {x: 407.6, y: 343.8}
   m_Pivot: {x: 0.5, y: 0.5}

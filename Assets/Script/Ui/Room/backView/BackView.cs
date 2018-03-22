@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class BackView : MonoBehaviour {
+public class BackView : MonoBehaviour
+{
 
     public Text img_roomId;
     public Image img_tableColor;
-    public Text text_round;
 
     private string tablePath = "";
 
@@ -20,6 +21,38 @@ public class BackView : MonoBehaviour {
         //
         RoomEvent.ChangeTableColorEvent += ChangeTableColorEvent;
     }
+
+    //public void OnPointerClick(PointerEventData eventData)
+    //{
+    //    Debug.Log("ddddddddddddddddddddddddddddd");
+    //    GameObject ani = Instantiate(Resources.Load("Prefab/GameObject_number")) as GameObject;
+    //    //ani.GetComponent<Image>().SetNativeSize();
+    //    ani.transform.SetParent(this.transform, false);
+    //    ani.transform.localPosition = new Vector3(280, -140, 0);
+    //    ani.GetComponent<Number>().showNumber(2000);
+    //    ani.GetComponent<GameAnimator_Move>().goMove();
+
+    //    GameObject ani1 = Instantiate(Resources.Load("Prefab/GameObject_number")) as GameObject;
+    //    //ani.GetComponent<Image>().SetNativeSize();
+    //    ani1.transform.SetParent(this.transform, false);
+    //    ani1.transform.localPosition = new Vector3(430, 30, 0);
+    //    ani1.GetComponent<Number>().showNumber(2000);
+    //    ani1.GetComponent<GameAnimator_Move>().goMove();
+
+    //    GameObject ani2 = Instantiate(Resources.Load("Prefab/GameObject_number")) as GameObject;
+    //    //ani.GetComponent<Image>().SetNativeSize();
+    //    ani2.transform.SetParent(this.transform, false);
+    //    ani2.transform.localPosition = new Vector3(190, 240, 0);
+    //    ani2.GetComponent<Number>().showNumber(2000);
+    //    ani2.GetComponent<GameAnimator_Move>().goMove();
+
+    //    GameObject ani3 = Instantiate(Resources.Load("Prefab/GameObject_number")) as GameObject;
+    //    //ani.GetComponent<Image>().SetNativeSize();
+    //    ani3.transform.SetParent(this.transform, false);
+    //    ani3.transform.localPosition = new Vector3(-430, 30, 0);
+    //    ani3.GetComponent<Number>().showNumber(2000);
+    //    ani3.GetComponent<GameAnimator_Move>().goMove();
+    //}
 
     //换桌布
     private void ChangeTableColorEvent()
@@ -39,8 +72,6 @@ public class BackView : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        img_roomId.text = "房间号 : "+GameInfo.Instance.roomId;
-
         changeTable();
 
     }
@@ -49,17 +80,17 @@ public class BackView : MonoBehaviour {
     {
         if (PlayerPrefs.GetString("TableColor") == "blue")
         {
-            tablePath = "Texture/game/room/background_2";
+            tablePath = "Sprite/table/background_2";
         }
         else if (PlayerPrefs.GetString("TableColor") == "green")
         {
-            tablePath = "Texture/game/room/background_1";
+            tablePath = "Sprite/table/background_1";
         }
     }
 
     private void upDateRound()
     {
-        text_round.text = "第 " + GameInfo.Instance.round + " 圈";
+        img_roomId.text = "第 " + GameInfo.Instance.round + " 局";
     }
 	
 	// Update is called once per frame
@@ -87,7 +118,14 @@ public class BackView : MonoBehaviour {
     //重置数据
     public void resetView()
     {
-        text_round.text = "";
+        img_roomId.text = "";
+    }
+
+    //重连
+    public void ReJoinRoom()
+    {
+        changeTable();
+        upDateRound();
     }
 
 }

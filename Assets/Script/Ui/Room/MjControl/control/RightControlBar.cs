@@ -42,17 +42,11 @@ public class RightControlBar : MonoBehaviour {
     private void LiuJuEvent(List<PlayerData> list)
     {
         liujuFlag = 1;
-        Debug.Log("list 数量 = " + list.Count);
         for (int i = 0; i < list.Count; i++)
         {
-            Debug.Log("right 找位置 = " + list[i].getUserId());
-            //Debug.Log("left leftPostion =" + GameInfo.Instance.leftPostion + "读取的位置 i=" + i + "取的位置 list[i].getUserId()=" + list[i].getUserId());
             if (list[i].getUserId() == GameInfo.Instance.rightPositon)
             {
                 handList = list[i].gethandlist();
-                Debug.Log("right 手牌 数量 = " + handList.Count);
-                handList.Reverse();
-
             }
         }
 
@@ -67,15 +61,12 @@ public class RightControlBar : MonoBehaviour {
             this.zimoPos = pos;
             for(int i=0;i< list.Count; i++)
             {
-                //Debug.Log("right rightPositon ="+ GameInfo.Instance.rightPositon+"读取的位置 i="+i+ "取的位置 list[i].getUserId()="+list[i].getUserId());
                 if (list[i].getUserId() == GameInfo.Instance.rightPositon)
                 {
-                    //Debug.Log("right 自摸 手牌数量=" + list[i].gethandlist().Count);
                     handList = list[i].gethandlist();
                 }
             }
         }
-
     }
 
     //吃胡
@@ -87,16 +78,12 @@ public class RightControlBar : MonoBehaviour {
             this.chihuPos = pos;
             for (int i = 0; i < list.Count; i++)
             {
-                //Debug.Log("right rightPositon =" + GameInfo.Instance.rightPositon + "读取的位置 i=" + i + "取的位置 list[i].getUserId()=" + list[i].getUserId());
                 if (list[i].getUserId() == GameInfo.Instance.rightPositon)
-                {
-                    
-                    //Debug.Log("right 吃胡 手牌数量=" + list[i].gethandlist().Count);
+                {                
                     handList = list[i].gethandlist();
                 }
             }
         }
-
     }
 
     //碰牌
@@ -106,7 +93,6 @@ public class RightControlBar : MonoBehaviour {
         {
             this.pengMj = mj;
         }
-
     }
 
     //直杠
@@ -116,7 +102,6 @@ public class RightControlBar : MonoBehaviour {
         {
             this.zhiGangMj = mj;
         }
-
     }
 
     //明杠
@@ -126,7 +111,6 @@ public class RightControlBar : MonoBehaviour {
         {
             this.minggangMj = mj;
         }
-
     }
 
     //暗杠
@@ -136,7 +120,6 @@ public class RightControlBar : MonoBehaviour {
         {
             this.angangMj = mj;
         }
-
     }
 
     // Update is called once per frame
@@ -221,9 +204,10 @@ public class RightControlBar : MonoBehaviour {
 
     private IEnumerator ShowA()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(4);
         //要把牌推倒,如果是当前位置胡了,要把胡的牌放到摸牌的地方
         this.reset();
+        handList.Sort((x, y) => -x.CompareTo(y));
         for (int i = 0; i < handList.Count; i++)
         {
             GameObject mjCard = Instantiate(Resources.Load("Prefab/GameObject_right_out_card")) as GameObject;
@@ -294,11 +278,11 @@ public class RightControlBar : MonoBehaviour {
 
     ///初始化发牌
     /// </summary>
-    public void initHandMj()
+    public void initHandMj(int count=13)
     {
         if (GameInfo.Instance.rightPositon>0&& GameInfo.Instance.rightName != "")
         {
-            for (int i = 0; i < 13; i++)
+            for (int i = 0; i < count; i++)
             {
                 GameObject mjCard = Instantiate(Resources.Load("Prefab/GameObject_mj_right")) as GameObject;
                 mjCard.transform.localPosition = new Vector3(i * 10, i * -35, 0);

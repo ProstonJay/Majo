@@ -10,7 +10,7 @@ public class Mj_top_out : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        Sprite sp = Resources.Load("Texture/game/mj/xia_w/xiao_banzi", typeof(Sprite)) as Sprite;
+        Sprite sp = Resources.Load("Sprite/mj/xia_w/xiao_banzi", typeof(Sprite)) as Sprite;
         bg.sprite = sp;
     }
 	
@@ -21,7 +21,7 @@ public class Mj_top_out : MonoBehaviour {
 
     public void setPic(string mjid)
     {
-        Sprite sp = Resources.Load("Texture/game/mj/xia_w/xiao_" + mjid, typeof(Sprite)) as Sprite;
+        Sprite sp = Resources.Load("Sprite/mj/xia_w/xiao_" + mjid, typeof(Sprite)) as Sprite;
         pic.sprite = sp;
     }
 }

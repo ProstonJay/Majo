@@ -94,7 +94,7 @@ public class Action_Left : MonoBehaviour {
     }
 
     //直杠
-    public void addZhiGang(int mjid)
+    public void addZhiGang(int mjid, bool audioOff = false)
     {
         int acunt = this.mj.Count;
         //int acunt = GameInfo.Instance.myAcionList.Count;
@@ -107,12 +107,15 @@ public class Action_Left : MonoBehaviour {
         mjCard.transform.localScale = new Vector3(0.8f, 0.8f, 0);
         mjCard.name = "zhiGang";
         mj.Add(mjCard);
-        Debug.Log("直杠配音路径" + MajooUtil.getZhiGangViocePath());
-        AudioMgr.Instance.SoundPlay(MajooUtil.getZhiGangViocePath(), 1, 0);
+        if (audioOff == false)
+        {
+            Debug.Log("直杠配音路径" + MajooUtil.getZhiGangViocePath());
+            AudioMgr.Instance.SoundPlay(MajooUtil.getZhiGangViocePath(), 1, 0);
+        }
     }
 
     //碰牌
-    public void addPeng(int mjid)
+    public void addPeng(int mjid, bool audioOff = false)
     {
         int acunt = this.mj.Count;
         //int acunt = GameInfo.Instance.myAcionList.Count;
@@ -126,13 +129,16 @@ public class Action_Left : MonoBehaviour {
         mjCard.transform.localScale = new Vector3(0.8f, 0.8f, 0);
         mjCard.name = "peng";
         mj.Add(mjCard);
-        Debug.Log("碰牌配音路径" + MajooUtil.getPengPaiViocePath());
-        AudioMgr.Instance.SoundPlay(MajooUtil.getPengPaiViocePath(), 1, 0);
+        if (audioOff == false)
+        {
+            Debug.Log("碰牌配音路径" + MajooUtil.getPengPaiViocePath());
+            AudioMgr.Instance.SoundPlay(MajooUtil.getPengPaiViocePath(), 1, 0);
+        }
     }
 
 
     //明杠
-    public void addMingGang(int mjid)
+    public void addMingGang(int mjid, bool audioOff = false)
     {
         if (mj.Count > 0)
         {
@@ -148,13 +154,16 @@ public class Action_Left : MonoBehaviour {
                     }
                 }
             }
-            Debug.Log("明杠配音路径" + MajooUtil.getMingGangViocePath());
-            AudioMgr.Instance.SoundPlay(MajooUtil.getMingGangViocePath(), 1, 0);
+            if (audioOff == false)
+            {
+                Debug.Log("明杠配音路径" + MajooUtil.getMingGangViocePath());
+                AudioMgr.Instance.SoundPlay(MajooUtil.getMingGangViocePath(), 1, 0);
+            }
         }
     }
 
     //暗杠
-    public void addAnGang(int mjid)
+    public void addAnGang(int mjid, bool audioOff = false)
     {
         int acunt = this.mj.Count;
         //int acunt = GameInfo.Instance.topAcionList.Count;
@@ -167,9 +176,11 @@ public class Action_Left : MonoBehaviour {
         mjCard.transform.localScale = new Vector3(0.8f, 0.8f, 0);
         mjCard.name = "gang";
         mj.Add(mjCard);
-
-        Debug.Log("暗杠配音路径" + MajooUtil.getAnGangViocePath());
-        AudioMgr.Instance.SoundPlay(MajooUtil.getAnGangViocePath(), 1, 0);
+        if (audioOff == false)
+        {
+            Debug.Log("暗杠配音路径" + MajooUtil.getAnGangViocePath());
+            AudioMgr.Instance.SoundPlay(MajooUtil.getAnGangViocePath(), 1, 0);
+        }
     }
 
     public void reset()
@@ -183,14 +194,33 @@ public class Action_Left : MonoBehaviour {
         }
         mj.Clear();
     }
-    // Use this for initialization
-    void Start()
+    //重连
+    public void ReJoinAction(List<Action> alist = null)
     {
-        reset();
-        //addAnGang(35);
-        //addPeng(32);
-        //addZhiGang(11);
-        //addMingGang(32);
-        //addZhiGang(34);
+        if (alist != null && alist.Count > 0)
+        {
+            for (int i = 0; i < alist.Count; i++)
+            {
+                Action act = alist[i];
+                int type = act.getActionType();
+                int mj = act.getValue();
+                switch (type)
+                {
+                    case 1://碰
+                        addPeng(mj, true);
+                        break;
+                    case 2://直杠
+                        addZhiGang(mj, true);
+                        break;
+                    case 4://明杠
+                        addPeng(mj, true);
+                        addMingGang(mj, true);
+                        break;
+                    case 5://暗杠
+                        addAnGang(mj, true);
+                        break;
+                }
+            }
+        }
     }
 }

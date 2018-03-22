@@ -14,7 +14,7 @@ public class Choose_AnGangPai : MonoBehaviour, IPointerClickHandler
     public void setPic(int  mjid)
     {
         this.mjId = mjid;
-        Sprite sp = Resources.Load("Texture/game/mj/xia_w/xiao_" + mjid.ToString(), typeof(Sprite)) as Sprite;
+        Sprite sp = Resources.Load("Sprite/mj/xia_w/xiao_" + mjid.ToString(), typeof(Sprite)) as Sprite;
         mj.sprite = sp;
     }
 

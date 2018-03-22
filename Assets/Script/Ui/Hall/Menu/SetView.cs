@@ -61,35 +61,35 @@ public class SetView : MonoBehaviour {
             if (PlayerPrefs.GetString("music") == "off")
             {
                 Debug.Log("关音乐");
-                Sprite sp = Resources.Load("Texture/game/setting/btn_guang", typeof(Sprite)) as Sprite;
+                Sprite sp = Resources.Load("Sprite/setting/btn_guang", typeof(Sprite)) as Sprite;
                 yinyueBtn.GetComponent<Image>().sprite = sp;
             }
             else
             {
                 Debug.Log("开音乐");
-                Sprite sp = Resources.Load("Texture/game/setting/btn_kai", typeof(Sprite)) as Sprite;
+                Sprite sp = Resources.Load("Sprite/setting/btn_kai", typeof(Sprite)) as Sprite;
                 yinyueBtn.GetComponent<Image>().sprite = sp;
             }
 
             if (PlayerPrefs.GetString("sound") == "off")
             {    
-                Sprite sp = Resources.Load("Texture/game/setting/btn_guang", typeof(Sprite)) as Sprite;
+                Sprite sp = Resources.Load("Sprite/setting/btn_guang", typeof(Sprite)) as Sprite;
                 yinxiaoBtn.GetComponent<Image>().sprite = sp;
             }
             else
             {
-                Sprite sp = Resources.Load("Texture/game/setting/btn_kai", typeof(Sprite)) as Sprite;
+                Sprite sp = Resources.Load("Sprite/setting/btn_kai", typeof(Sprite)) as Sprite;
                 yinxiaoBtn.GetComponent<Image>().sprite = sp;
             }
 
             if (PlayerPrefs.GetString("vioce") == "off")
             {
-                Sprite sp = Resources.Load("Texture/game/setting/btn_guang", typeof(Sprite)) as Sprite;
+                Sprite sp = Resources.Load("Sprite/setting/btn_guang", typeof(Sprite)) as Sprite;
                 yuyinBtn.GetComponent<Image>().sprite = sp;
             }
             else
             {
-                Sprite sp = Resources.Load("Texture/game/setting/btn_kai", typeof(Sprite)) as Sprite;
+                Sprite sp = Resources.Load("Sprite/setting/btn_kai", typeof(Sprite)) as Sprite;
                 yuyinBtn.GetComponent<Image>().sprite = sp;
             }
 
@@ -151,7 +151,7 @@ public class SetView : MonoBehaviour {
         {
             PlayerPrefs.SetString("music", "off");
 
-            Sprite sp = Resources.Load("Texture/game/setting/btn_guang", typeof(Sprite)) as Sprite;
+            Sprite sp = Resources.Load("Sprite/setting/btn_guang", typeof(Sprite)) as Sprite;
             yinyueBtn.GetComponent<Image>().sprite = sp;
 
             AudioMgr.Instance.BGMStop();
@@ -160,10 +160,10 @@ public class SetView : MonoBehaviour {
         {
             PlayerPrefs.SetString("music", "on");
 
-            Sprite sp = Resources.Load("Texture/game/setting/btn_kai", typeof(Sprite)) as Sprite;
+            Sprite sp = Resources.Load("Sprite/setting/btn_kai", typeof(Sprite)) as Sprite;
             yinyueBtn.GetComponent<Image>().sprite = sp;
 
-            AudioMgr.Instance.BGMPlay("Bg/bgm", 0.5f);
+            AudioMgr.Instance.BGMPlay("Bg/bgm", 0.05f);
         }
     }
 
@@ -175,14 +175,14 @@ public class SetView : MonoBehaviour {
         {
             PlayerPrefs.SetString("sound", "off");
 
-            Sprite sp = Resources.Load("Texture/game/setting/btn_guang", typeof(Sprite)) as Sprite;
+            Sprite sp = Resources.Load("Sprite/setting/btn_guang", typeof(Sprite)) as Sprite;
             yinxiaoBtn.GetComponent<Image>().sprite = sp;
         }
         else
         {
             PlayerPrefs.SetString("sound", "on");
 
-            Sprite sp = Resources.Load("Texture/game/setting/btn_kai", typeof(Sprite)) as Sprite;
+            Sprite sp = Resources.Load("Sprite/setting/btn_kai", typeof(Sprite)) as Sprite;
             yinxiaoBtn.GetComponent<Image>().sprite = sp;
         }
     }
@@ -196,14 +196,14 @@ public class SetView : MonoBehaviour {
         {
             PlayerPrefs.SetString("vioce", "off");
 
-            Sprite sp = Resources.Load("Texture/game/setting/btn_guang", typeof(Sprite)) as Sprite;
+            Sprite sp = Resources.Load("Sprite/setting/btn_guang", typeof(Sprite)) as Sprite;
             yuyinBtn.GetComponent<Image>().sprite = sp;
         }
         else
         {
             PlayerPrefs.SetString("vioce", "on");
 
-            Sprite sp = Resources.Load("Texture/game/setting/btn_kai", typeof(Sprite)) as Sprite;
+            Sprite sp = Resources.Load("Sprite/setting/btn_kai", typeof(Sprite)) as Sprite;
             yuyinBtn.GetComponent<Image>().sprite = sp;
         }
     }

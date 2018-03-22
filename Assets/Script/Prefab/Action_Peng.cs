@@ -18,7 +18,7 @@ public class Action_Peng : MonoBehaviour {
     //type 1碰,2杠
     public void setPic(string path,int type)
     {
-        Sprite sp = Resources.Load("Texture/game/mj/" + path, typeof(Sprite)) as Sprite;
+        Sprite sp = Resources.Load("Sprite/mj/" + path, typeof(Sprite)) as Sprite;
         mj1.sprite = sp;
         mj2.sprite = sp;
         mj3.sprite = sp;

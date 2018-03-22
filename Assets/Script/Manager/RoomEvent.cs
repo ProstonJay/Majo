@@ -55,7 +55,92 @@ public class RoomEvent : MonoBehaviour {
     public delegate void ChangeTableColor();
     public static event ChangeTableColor ChangeTableColorEvent;
 
-    //流局
+    //断线
+    public delegate void PlayerOffLine(int pos);
+    public static event PlayerOffLine PlayerOffLineEvent;
+
+    //上线
+    public delegate void PlayerOnLine(int pos);
+    public static event PlayerOnLine PlayerOnLineEvent;
+
+    //玩家准备 
+    public delegate void PlayerReady(string pos);
+    public static event PlayerReady PlayerReadyEvent;
+
+    //玩家发起解散房间
+    public delegate void InitiateDisMiss(string pname);
+    public static event InitiateDisMiss InitiateDisMissEvent;
+
+    //投票结果
+    public delegate void VoteDisResults(int cmod);
+    public static event VoteDisResults VoteDisResultsEvent;
+
+    //投票结果
+    public static void DoVoteDisResults(int cmod)
+    {
+        if (VoteDisResultsEvent != null)
+        {
+            VoteDisResultsEvent(cmod);
+        }
+        else
+        {
+            Debug.Log("VoteDisResultsEvent is Empty");
+        }
+    }
+
+    //玩家发起解散房间
+    public static void DoInitiateDisMiss(string pname)
+    {
+        if (InitiateDisMissEvent != null)
+        {
+            InitiateDisMissEvent(pname);
+        }
+        else
+        {
+            Debug.Log("InitiateDisMissEvent is Empty");
+        }
+    }
+
+    //玩家准备
+    public static void DoPlayerReady(string pos)
+    {
+        if (PlayerReadyEvent != null)
+        {
+            PlayerReadyEvent(pos);
+        }
+        else
+        {
+            Debug.Log("PlayerReadyEvent is Empty");
+        }
+    }
+
+    //上线
+    public static void DoPlayerOnLine(int pos)
+    {
+        if (PlayerOnLineEvent != null)
+        {
+            PlayerOnLineEvent(pos);
+        }
+        else
+        {
+            Debug.Log("PlayerOnLineEvent is Empty");
+        }
+    }
+
+    //断线
+    public static void DoPlayerOffLine(int pos)
+    {
+        if (PlayerOffLineEvent != null)
+        {
+            PlayerOffLineEvent(pos);
+        }
+        else
+        {
+            Debug.Log("PlayerOffLineEvent is Empty");
+        }
+    }
+
+    //换桌面
     public static void DoChangeTableColor()
     {
         if (ChangeTableColorEvent != null)

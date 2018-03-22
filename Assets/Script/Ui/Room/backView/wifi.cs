@@ -35,19 +35,19 @@ public class wifi : MonoBehaviour {
             string network = string.Empty;
             if (Application.internetReachability == NetworkReachability.NotReachable)
             {
-                network = "None";
+                network = "无网络";
             }
             else if (Application.internetReachability == NetworkReachability.ReachableViaCarrierDataNetwork)
             {
-                network = "3G/4G";
+                //network = "3G/4G";
             }
             else if (Application.internetReachability == NetworkReachability.ReachableViaLocalAreaNetwork)
             {
-                network = "WiFi";
+                //network = "WiFi";
             }
-            Debug.Log("网络状态=" + network);
+            //Debug.Log("网络状态=" + network);
             text_wifi.text = network;
-            yield return new WaitForSeconds(60f);
+            yield return new WaitForSeconds(30f);
         }
     }
 
@@ -57,7 +57,7 @@ public class wifi : MonoBehaviour {
         {
             ping = new Ping(NettySocket.ipArderrs);
             //ping = new Ping("119.75.217.109");
-            yield return new WaitForSeconds(60f);
+            yield return new WaitForSeconds(10f);
         }
     }
 
@@ -68,35 +68,36 @@ public class wifi : MonoBehaviour {
             float delayTime = ping.time;
             ping.DestroyPing();
             ping = null;
-            Debug.Log("服务器延迟="+ delayTime);
             upDateWifiStaut(delayTime);
         }
     }
 
     private void upDateWifiStaut(float delayTime)
     {
-        string imgPath = "Texture/game/wifi/5";
+        string imgPath = "Sprite/wifi/5";
         if (delayTime>=0&& delayTime<30)
         {
-            imgPath = "Texture/game/wifi/1";
+            imgPath = "Sprite/wifi/1";
         }
         else if (delayTime > 50 && delayTime < 100)
         {
-            imgPath = "Texture/game/wifi/2";
+            imgPath = "Sprite/wifi/2";
         }
         else if (delayTime > 100 && delayTime < 150)
         {
-            imgPath = "Texture/game/wifi/3";
+            imgPath = "Sprite/wifi/3";
         }
         else if (delayTime > 150 && delayTime < 200)
         {
-            imgPath = "Texture/game/wifi/4";
+            imgPath = "Sprite/wifi/4";
         }
         else if (delayTime > 200)
         {
-            imgPath = "Texture/game/wifi/5";
+            imgPath = "Sprite/wifi/5";
         }
         Sprite sp = Resources.Load(imgPath, typeof(Sprite)) as Sprite;
         img_wifi.sprite = sp;
+        //
+        text_wifi.text = delayTime.ToString();
     }
 }

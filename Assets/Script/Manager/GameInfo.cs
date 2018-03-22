@@ -10,32 +10,52 @@ public class GameInfo : MonoBehaviour {
     /// <summary>
     /// 全局用户数据
     /// </summary>
+    public string ToKen;//验证码
     public string DeviceID; //设备唯一ID
     public int UserID; //游戏唯一ID
     public string UserName; //昵称
     public int UserIcon; //头像
     public int UserFK; //房卡
     public string sex;// boy girl
+    public List<MailData> mailList = new List<MailData>();//从大到小
+    public List<BattleData> battleList = new List<BattleData>();//从大到小
 
     /// <summary>
     /// 游戏房间数据
     /// </summary>
     public int roomId; //房间号
+    public int roomPassWord; //房间密码
+    public int hostId; //房主ID
     public int maxRound; //最大圈数
     public int maxPoint; //最大番数
+    public int isZjDouble; //庄家加倍
+    public int canQiangGang; //抢杠胡
+    public int isDaiGen; //带根
+    public int isZiMoHu; //自摸胡
+    
+    public SocketModel skm;//重连数据
+    public int VoteDisFlag;//解散标记，禁止重复申请
+
+    //
     public int zhuangjia; //当前庄家的位置(1-4)
     public int round; //当前圈数
     public int mjLeft; //剩余牌数量
+    public int actionFlag;//当前操作玩家位置
+    //
+    public int isEndStat;//标记是否可以显示结算
+    public int isGameStart;//标记游戏是否开始
+    public List<PlayerData> jieSuanRoundData;//小结算数据
+    public List<PlayerData> jieSuanEndData;//总结算数据
 
     /// <summary>
     /// 游戏内个人数据
     /// </summary>
+    public int isMyReady;//0.No 1.Yes
     public int positon ; //位置(1234--东南西北)
     public int myGold;//金币数量
     public List<int> myHandMj = new List<int>();//从大到小
     public List<Action> myAcionList = new List<Action>();//操作牌型的列表
     //每回合临时缓存
-    public List<Action> pengList = new List<Action>();//碰牌牌型的列表
     public List<Action> gangList = new List<Action>();//杠牌牌型的列表
 
     /// <summary>
@@ -45,6 +65,7 @@ public class GameInfo : MonoBehaviour {
     public string rightName;
     public string rightIcon;
     public int rightGlod;
+    public int isRightReady;//0.No 1.Yes
     public List<Action> rightAcionList = new List<Action>();//操作牌型的列表
 
     /// <summary>
@@ -54,6 +75,7 @@ public class GameInfo : MonoBehaviour {
     public string topName;
     public string topIcon;
     public int topGold;
+    public int isTopReady;//0.No 1.Yes
     public List<Action> topAcionList = new List<Action>();//操作牌型的列表
 
     /// <summary>
@@ -63,19 +85,26 @@ public class GameInfo : MonoBehaviour {
     public string leftName;
     public string leftIcon;
     public int leftGold;
+    public int isLeftReady;//0.No 1.Yes
     public List<Action> leftAcionList = new List<Action>();//操作牌型的列表
 
     //是否在操作回合,只有在自己摸牌的时候才能操作
     public Boolean PlayFlag;
 
+    //更新用户钻石
+    public void setUserFk(int value)
+    {
+        this.UserFK = value;
+        GameEvent.UpdateFk();
+    }
+
     //小结算重置
     public void reset()
     {
+        VoteDisFlag = 0;
         mjLeft = 0;
-        myHandMj.Clear();
         PlayFlag = false;
         zhuangjia = 0;
-        pengList.Clear();
         gangList.Clear();
         myAcionList.Clear();
         rightAcionList.Clear();
@@ -112,9 +141,39 @@ public class GameInfo : MonoBehaviour {
         reset();
     }
 
+    //玩家准备了
+    public void PlayerGetReady(int rdPos)
+    {
+        string pos = "";
+        if (GameInfo.Instance.positon == rdPos)
+        {
+            pos = "bot";
+        }
+        else
+        {
+            pos = TryGetLocPos(GameInfo.Instance.positon,rdPos);
+        }
+        switch (pos)
+        {
+            case "bot":
+                isMyReady = 1;
+                break;
+            case "right":
+                isRightReady = 1;
+                break;
+            case "top":
+                isTopReady = 1;
+                break;
+            case "left":
+                isLeftReady = 1;
+                break;
+        }
+
+        RoomEvent.DoPlayerReady(pos);
+    }
 
     //新玩家进入房间
-    public void addNewPlayer(int othpos, string pname,string icon,int glod)
+    public void addNewPlayer(int othpos, string pname,string icon,int glod, List<Action> alist=null)
     {
         switch (TryGetLocPos(positon, othpos))
         {
@@ -123,18 +182,21 @@ public class GameInfo : MonoBehaviour {
                 rightName = pname;
                 rightIcon = icon;
                 rightGlod = glod;
+                if (alist != null) { rightAcionList = alist; }
                 break;
             case "top":
                 topPostion = othpos;
                 topName = pname;
                 topIcon = icon;
                 topGold = glod;
+                if (alist != null) { topAcionList = alist; }
                 break;
             case "left":
                 leftPostion = othpos;
                 leftName = pname;
                 leftIcon = icon;
                 leftGold = glod;
+                if (alist != null) { leftAcionList = alist; }
                 break;
         }
     }
@@ -253,8 +315,6 @@ public class GameInfo : MonoBehaviour {
         {
             myAcionList.Add(act);
             sendPos = "bot";
-            //
-            this.myGold += 200;
         }
         else
         {
@@ -337,33 +397,6 @@ public class GameInfo : MonoBehaviour {
         myHandMj.Sort((x, y) => -x.CompareTo(y));
     }
 
-    //删除一个数组里的指定数量的数字
-    public  void deleteIntWithNum(List<int> mjList, int value, int repeat)
-    {
-        //System.out.println("需要删除的数字"+value);
-        //System.out.println("传入的数组="+mjList);
-        //System.out.println("重复次数="+repeat);
-        int count = 1;
-
-
-        for (int i = 0; i < mjList.Count; i++)
-        {
-            if (mjList[i]==value)
-            {
-                //System.out.println("找到"+count+"个相同的="+i);
-                mjList.RemoveAt(i);
-                count++;
-                i--;
-            }
-            if (count > repeat)
-            {
-                break;
-            }
-
-        }
-        //System.out.println("删除完后的数组="+mjList);
-    }
-
     void Awake()
     {
         if (Instance == null)
@@ -379,7 +412,6 @@ public class GameInfo : MonoBehaviour {
             }
         }
     }
-
     // Use this for initialization
     void Start () {
        

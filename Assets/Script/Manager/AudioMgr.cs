@@ -118,9 +118,7 @@ public class AudioMgr : MonoBehaviour
     {
         if (this.BGMAudioSource != null)
         {
-            Debug.Log("背景音乐音量 BGMAudioSource.volume = volume= " + BGMAudioSource.volume);
             this.BGMAudioSource.volume = volume;
-            Debug.Log("背景音乐音量 BGMAudioSource.volume = volume= " + BGMAudioSource.volume);
         }
     }
 
@@ -231,7 +229,6 @@ public class AudioMgr : MonoBehaviour
 
     private AudioClip GetVoiceAudioClip(string aduioname)
     {
-        Debug.Log("配音路径=Audio/Voice/" + aduioname);
         return Resources.Load("Audio/Voice/" + aduioname) as AudioClip;
     }
 
@@ -268,7 +265,6 @@ public class AudioMgr : MonoBehaviour
             LoopClip.reverbZoneMix = 0;
             LoopClip.Play();
             this.BGMAudioSource = LoopClip;
-            Debug.Log("背景音乐音量 LoopClip.volume = volume= "+ LoopClip.volume);
         }
     }
 

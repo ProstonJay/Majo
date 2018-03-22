@@ -16,19 +16,34 @@ public class CreatRoomWindow : MonoBehaviour {
     public Toggle F24Toggle;
     public Toggle F36Toggle;
 
+    public Toggle Toggle_ZhuangDoubel;
+    public Toggle Toggle_CanQiangGang;
+    public Toggle Toggle_DaiGen;
+    public Toggle Toggle_QueMen;
+
     private int MaxRound;
     private int MaxPoint;
+    public int ZhuangjiaDouble;
+    public int QiangGang;
+    public int DaiGen;
+    public int ZiMoHu;
 
-    public Toggle zhuangjia;
-    public Toggle qiangGang;
-    public Toggle buChihu;
-
-    public int zhuangjiaDouble;
-    public int keQiangGang;
-    public int buChiXiaoHu;
+    public InputField inPut_PassWord;
 
     // Use this for initialization
     void Start () {
+        //
+        MaxRound = 12;
+        MaxPoint = 24;
+
+        ZhuangjiaDouble = 1;
+        QiangGang = 1;
+        DaiGen = 1;
+        ZiMoHu = 0;
+
+        int vid = UnityEngine.Random.Range(1, 9) * 111;
+        inPut_PassWord.text = vid.ToString();
+        //
         CreatBtn.onClick.AddListener(CreatPressed);
         CloseBtn.onClick.AddListener(ClosePressed);
 
@@ -41,52 +56,67 @@ public class CreatRoomWindow : MonoBehaviour {
         F36Toggle.onValueChanged.AddListener((bool value) => OnFanClick(F36Toggle, value));
 
 
-        zhuangjia.onValueChanged.AddListener((bool value) => OnZhuangJiaClick(zhuangjia, value));
-        qiangGang.onValueChanged.AddListener((bool value) => OnqiangGangClick(qiangGang, value));
-        buChihu.onValueChanged.AddListener((bool value) => OnbuChihuClick(buChihu, value));
+        Toggle_ZhuangDoubel.onValueChanged.AddListener((bool value) => OnZhuangJiaClick(Toggle_ZhuangDoubel, value));
+        Toggle_CanQiangGang.onValueChanged.AddListener((bool value) => OnqiangGangClick(Toggle_CanQiangGang, value));
+        Toggle_DaiGen.onValueChanged.AddListener((bool value) => OnbuDaiGenClick(Toggle_DaiGen, value));
+        Toggle_QueMen.onValueChanged.AddListener((bool value) => OnbuQueMenClick(Toggle_QueMen, value));
     }
 
 
     //庄家加倍
     public void OnZhuangJiaClick(Toggle toggle, bool ison)
     {
-        AudioMgr.Instance.SoundPlay("btnSelect", 1f, 2);
         if (ison)
         {
-            this.zhuangjiaDouble = 1;
+            this.ZhuangjiaDouble = 1;
         }
         else
         {
-            this.zhuangjiaDouble = 0;
+            this.ZhuangjiaDouble = 0;
         }
+        AudioMgr.Instance.SoundPlay("btnSelect", 1f, 2);
     }
 
     //可抢杠胡
     public void OnqiangGangClick(Toggle toggle, bool ison)
     {
-        AudioMgr.Instance.SoundPlay("btnSelect", 1f, 2);
         if (ison)
         {
-            this.keQiangGang = 1;
+            this.QiangGang = 1;
         }
         else
         {
-            this.keQiangGang = 0;
+            this.QiangGang = 1;
         }
+        AudioMgr.Instance.SoundPlay("btnSelect", 1f, 2);
     }
 
-    //1番不能吃胡
-    public void OnbuChihuClick(Toggle toggle, bool ison)
-    {
-        AudioMgr.Instance.SoundPlay("btnSelect", 1f, 2);
+    //带根
+    public void OnbuDaiGenClick(Toggle toggle, bool ison)
+    {    
         if (ison)
         {
-            this.buChiXiaoHu = 1;
+            this.DaiGen = 1;
         }
         else
         {
-            this.buChiXiaoHu = 0;
+            this.DaiGen = 0;
         }
+        AudioMgr.Instance.SoundPlay("btnSelect", 1f, 2);
+    }
+
+    //自摸胡
+    public void OnbuQueMenClick(Toggle toggle, bool ison)
+    {
+        if (ison)
+        {
+            this.ZiMoHu = 1;
+        }
+        else
+        {
+            this.ZiMoHu = 0;
+        }
+        AudioMgr.Instance.SoundPlay("btnSelect", 1f, 2);
     }
 
     //局数
@@ -98,13 +128,13 @@ public class CreatRoomWindow : MonoBehaviour {
             switch (toggle.name)
             {
                 case "2ju":
-                    MaxRound = 2;
+                    MaxRound = 12;
                     break;
                 case "3ju":
-                    MaxRound = 4;
+                    MaxRound = 24;
                     break;
                 case "4ju":
-                    MaxRound = 8;
+                    MaxRound = 36;
                     break;
                 default:
                     break;
@@ -135,30 +165,10 @@ public class CreatRoomWindow : MonoBehaviour {
         }
     }
 
-    //显示
-    public void showWindow()
-    {
-        gameObject.SetActive(true);
-        //每次显示,都初始化
-        J2Toggle.isOn = true;
-        F24Toggle.isOn = true;
-
-        MaxRound = 2;
-        MaxPoint = 24;
-
-        zhuangjia.isOn = true;
-        qiangGang.isOn = true;
-        buChihu.isOn = false;
-
-        zhuangjiaDouble = 1;
-        keQiangGang = 1;
-        buChiXiaoHu = 0;
-    }
-
     void CreatPressed()
     {
-        Debug.Log("开房需要" + MaxRound / 2 + "钻石");
-        if (GameInfo.Instance.UserFK <0|| GameInfo.Instance.UserFK < MaxRound/2)
+        Debug.Log("开房需要" + MaxRound / 12 + "钻石"+"密码="+ inPut_PassWord.text);
+        if (GameInfo.Instance.UserFK <0|| GameInfo.Instance.UserFK < MaxRound/12)
         {
             GameEvent.DoMsgEvent("房卡不足,请联系管理员!");
             return;
@@ -167,21 +177,21 @@ public class CreatRoomWindow : MonoBehaviour {
         CreatRoomRequset.SetMainCmd(ProtocolMC.Main_Cmd_HALL);//消息的类型为Login
         CreatRoomRequset.SetSubCmd(ProtocolSC.Sub_Cmd_CreatRoomRqs);//动作为请求登录
         CreatRoomRequset.SetCommand(0);
-        List<string> message = new List<string>();//这里存的是用户的ID;
-        message.Add(GameInfo.Instance.UserID.ToString());
-        message.Add(GameInfo.Instance.DeviceID);
-        message.Add(MaxRound.ToString());
-        message.Add(MaxPoint.ToString());
-        message.Add(zhuangjiaDouble.ToString());
-        message.Add(keQiangGang.ToString());
-        message.Add(buChiXiaoHu.ToString());
-        CreatRoomRequset.SetMessage(message);
+        List<int> list = new List<int>();
+        list.Add(MaxRound);
+        list.Add(MaxPoint);
+        list.Add(ZhuangjiaDouble);
+        list.Add(QiangGang);
+        list.Add(DaiGen);
+        list.Add(ZiMoHu);
+        list.Add(int.Parse(inPut_PassWord.text));
+        CreatRoomRequset.SetData(list);
         NettySocket.Instance.SendMsg(CreatRoomRequset);//发送这条消息给服务器
         AudioMgr.Instance.SoundPlay("btnClick", 1f, 2);
     }
     void ClosePressed()
     {
-        gameObject.SetActive(false);
+        Destroy(this.transform.gameObject);
         AudioMgr.Instance.SoundPlay("btnClose", 2f, 2);
     }
 

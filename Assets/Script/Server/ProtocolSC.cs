@@ -52,4 +52,25 @@ public class ProtocolSC  {
     //流局
     public const int Sub_Cmd_GAME_LIUJU= 22;
 
+
+    //聊天
+    public const int Sub_Cmd_GAME_CHAT = 23;
+    //分享
+    public const int Sub_Cmd_GAME_FENXIANG = 24;
+    //战绩
+    public const int Sub_Cmd_HALL_ZHANJI_战绩 = 25;
+
+
+    //心跳
+    public const int Sub_Cmd_GAME_HEARTBEAT_心跳 = 30;
+    //重连
+    public const int Sub_Cmd_GAME_REJOINROOM_房间重连 = 31;
+    //断线
+    public const int Sub_Cmd_GAME_OFFLINE_断线 = 32;
+    //上线
+    public const int Sub_Cmd_GAME_ONLINE_上线 = 33;
+    //发起解散
+    public const int Sub_Cmd_GAME_INITIATE_DISMISS_发起解散 = 34;
+    //发起解散
+    public const int Sub_Cmd_GAME_VOTE_DISMISS_投票解散 = 35;
 }

@@ -60,7 +60,69 @@ public class RoomServer
             case ProtocolSC.Sub_Cmd_GAME_LIUJU://流局
                 LiuJu(socketModel);
                 break;
+            case ProtocolSC.Sub_Cmd_GAME_CHAT://聊天
+                Chat(socketModel);
+                break;
+            case ProtocolSC.Sub_Cmd_GAME_OFFLINE_断线://断线了
+                PlayerOffLine(socketModel);
+                break;
+            case ProtocolSC.Sub_Cmd_GAME_ONLINE_上线://上线了
+                PlayerOnLine(socketModel);
+                break;
+            case ProtocolSC.Sub_Cmd_GAME_READY://上线了
+                PlayerReady(socketModel);
+                break;
+            case ProtocolSC.Sub_Cmd_GAME_INITIATE_DISMISS_发起解散:
+                InitiateDismiss(socketModel);
+                break;
+            case ProtocolSC.Sub_Cmd_GAME_VOTE_DISMISS_投票解散:
+                VoteDismiss(socketModel);
+                break;
         }
+    }
+
+    //投票解散结果
+    public void VoteDismiss(SocketModel socketModel)
+    {
+        int comd = socketModel.GetCommand();
+        RoomEvent.DoVoteDisResults(comd);
+    }
+
+    //有玩家发起解散房间
+    public void InitiateDismiss(SocketModel socketModel)
+    {
+        string Pname = socketModel.GetMessage()[0];
+        RoomEvent.DoInitiateDisMiss(Pname);
+    }
+
+    //玩家准备了
+    public void PlayerReady(SocketModel socketModel)
+    {
+        int pos = socketModel.GetCommand();
+        GameInfo.Instance.PlayerGetReady(pos);
+    }
+
+    //上线了
+    public void PlayerOnLine(SocketModel socketModel)
+    {
+        int pos = socketModel.GetCommand();
+        RoomEvent.DoPlayerOnLine(pos);
+    }
+
+    //断线了
+    public void PlayerOffLine(SocketModel socketModel)
+    {
+        int pos = socketModel.GetCommand();
+        RoomEvent.DoPlayerOffLine(pos);
+    }
+
+    //聊天
+    public void Chat(SocketModel socketModel)
+    {
+        List<int> list = socketModel.GetData();
+        int pos = list[0];
+        int txt = list[1];
+        GameEvent.DoChat(pos, txt);
     }
 
     //流局
@@ -109,7 +171,6 @@ public class RoomServer
             sendPos = GameInfo.Instance.TryGetLocPos(GameInfo.Instance.positon,pos);
         }
         List<PlayerData> plist = socketModel.GetPdata();
-        Debug.Log(" zimoPos=" + sendPos + "zimoMj= " + mj+ "plist 长度="+ plist.Count);
         RoomEvent.DoZiMo(sendPos, mj, plist);
         //
         GameInfo.Instance.PlayFlag = false;
@@ -136,6 +197,7 @@ public class RoomServer
         Action act = new Action();
         act.setActionType(CardView.CHI_ANGANG_暗杠);
         act.setActionData(alist);
+        Debug.Log("暗杠 pos="+ pos+"mj="+mj);
         GameInfo.Instance.addAnGang(pos, act);
 
     }
@@ -210,6 +272,8 @@ public class RoomServer
     //开局
     public void RoomGameStart(SocketModel socketModel)
     {
+        //
+        GameInfo.Instance.isGameStart = 1;
         int value = socketModel.GetCommand();
         if (value > 0)
         {
@@ -223,7 +287,12 @@ public class RoomServer
             GameInfo.Instance.zhuangjia = int.Parse(msg[0]);
             GameInfo.Instance.round = int.Parse(msg[1]);
             GameInfo.Instance.mjLeft = int.Parse(msg[2]);
-
+            //开始后，设置所有人状态为未准备
+            GameInfo.Instance.isMyReady = 0;
+            GameInfo.Instance.isRightReady = 0;
+            GameInfo.Instance.isTopReady = 0;
+            GameInfo.Instance.isLeftReady = 0;
+            //通知UI游戏开始了
             GameEvent.DoGameStartEvent(1);
             Debug.Log("人满开局发牌 "+ list);
         }
@@ -333,7 +402,7 @@ public class RoomServer
     {
         Debug.Log("收到小结算数据");
         List<PlayerData> plist = socketModel.GetPdata();
-        GameEvent.DoJieSuan(plist);
+        GameInfo.Instance.jieSuanRoundData = plist;
     }
 
     //总结算
@@ -341,6 +410,7 @@ public class RoomServer
     {
         Debug.Log("收到总结算数据");
         List<PlayerData> plist = socketModel.GetPdata();
-        GameEvent.DoZongJieSuan(plist);
+        GameInfo.Instance.jieSuanEndData = plist;
+        GameInfo.Instance.isGameStart = 0;
     }
 }

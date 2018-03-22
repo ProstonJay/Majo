@@ -11,6 +11,9 @@ public class headInfo : MonoBehaviour {
     public Image img_zhuangjia;
     public Image img_gold;
     public Text txt_gold;
+    public Image Img_offLine;
+
+    private int IconId;
 
     // Use this for initialization
     void Start () {
@@ -25,9 +28,27 @@ public class headInfo : MonoBehaviour {
 		
 	}
 
+    public void SetOffLine(bool boo)
+    {
+        Img_offLine.transform.gameObject.SetActive(boo);
+        if (boo == true)
+        {
+            Sprite sp = Resources.Load("Sprite/head/toux1", typeof(Sprite)) as Sprite;
+            img_icon.sprite = sp;
+            GameEvent.DoMsgTipEvent("玩家"+ txt_name.text+ "断线了！");
+        }
+        else
+        {
+            Sprite sp = Resources.Load("Sprite/head/head_" + IconId.ToString(), typeof(Sprite)) as Sprite;
+            img_icon.sprite = sp;
+            GameEvent.DoMsgTipEvent("玩家" + txt_name.text + "上线了！");
+        }
+    }
+
     public void SetHeadIcon(int iconId)
     {
-        Sprite sp = Resources.Load("Texture/Hall/head/head_"+ iconId.ToString(), typeof(Sprite)) as Sprite;
+        IconId = iconId;
+        Sprite sp = Resources.Load("Sprite/head/head_" + iconId.ToString(), typeof(Sprite)) as Sprite;
         img_icon.sprite = sp;
     }
 

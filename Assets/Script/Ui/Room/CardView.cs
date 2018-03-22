@@ -58,7 +58,7 @@ public class CardView : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        reset();
+      
     }
 
     public void setStartHandMj()
@@ -67,6 +67,64 @@ public class CardView : MonoBehaviour {
         rightControlBar.GetComponent<RightControlBar>().initHandMj();
         topControlBar.GetComponent<TopControlBar>().initHandMj();
         leftControlBar.GetComponent<LeftControlBar>().initHandMj();
+    }
+
+    //重连手牌
+    public void ReJoinSetHandlist(string pos,int count,int stat=0)
+    {
+        switch (pos)
+        {
+            case "bot":
+                myControlBar.GetComponent<MyControlBar>().reJoinHnadList(count,stat);
+                break;
+            case "right":
+                rightControlBar.GetComponent<RightControlBar>().initHandMj(count);
+                break;
+            case "top":
+                topControlBar.GetComponent<TopControlBar>().initHandMj(count);
+                break;
+            case "left":
+                leftControlBar.GetComponent<LeftControlBar>().initHandMj(count);
+                break;
+        }
+    }
+    //重连吃，碰，杠牌
+    public void ReJoinSetCpglist(string pos,List<Action> alist=null)
+    {
+        switch (pos)
+        {
+            case "bot":
+                myActionBar.GetComponent<Action_My>().ReJoinAction(alist);
+                break;
+            case "right":
+                rightActionBar.GetComponent<Action_Right>().ReJoinAction(alist);
+                break;
+            case "top":
+                topActionBar.GetComponent<Action_Top>().ReJoinAction(alist);
+                break;
+            case "left":
+                leftActionBar.GetComponent<Action_Left>().ReJoinAction(alist);
+                break;
+        }
+    }
+    //重连打出的牌
+    public void reJoinSetOutlist(string pos,List<int> olist=null)
+    {
+        switch (pos)
+        {
+            case "bot":
+                myOutBar.GetComponent<MyOutBar>().ReJoinOut(olist);
+                break;
+            case "right":
+                rightOutBar.GetComponent<RightOutBar>().ReJoinOut(olist);
+                break;
+            case "top":
+                topOutBar.GetComponent<TopOutBar>().ReJoinOut(olist);
+                break;
+            case "left":
+                leftOutBar.GetComponent<LeftOutBar>().ReJoinOut(olist);
+                break;
+        }
     }
 
     //摸牌

@@ -12,8 +12,6 @@ public class roomAnimator : MonoBehaviour
     public GameObject topNum;
     public GameObject leftNum;
 
-    public Button nextBtn;
-
     public int duijukaishi;
 
     public Image imgHuType;
@@ -35,6 +33,8 @@ public class roomAnimator : MonoBehaviour
 
     //自摸胡类型
     private int zimohuType;
+    //点炮类型
+    private int ChihuType;
     //
     private int gangType;
     private string gangPostion;
@@ -117,7 +117,6 @@ public class roomAnimator : MonoBehaviour
     //自摸动画
     private void ZiMoEvent(string pos, int mj, List<PlayerData> list)
     {
-        Debug.Log("自摸动画 pos="+ pos+ "plist.Count = " + plist.Count);
         this.zimoPos = pos;
         this.plist = list;
         if(plist!=null)
@@ -131,35 +130,20 @@ public class roomAnimator : MonoBehaviour
     //吃胡动画
     private void ChiHuEvent(string pos, int mj, int fangpao, List<PlayerData> list)
     {
-        Debug.Log("自摸动画 pos=" + pos + "plist.Count = " + plist.Count);
         this.chihuPos = pos;
         this.plist = list;
-
+        if (plist != null)
+        {
+            ChihuType = plist[0].getHupai();
+        }
     }
 
 
     // Use this for initialization
     void Start () {
-        nextBtn.onClick.AddListener(nextPressed);
-        nextBtn.gameObject.SetActive(false);
+
     }
 
-    private void nextPressed()
-    {
-        Debug.Log("获取结果");
-        //获取结果
-        SocketModel endRequset = new SocketModel();
-        endRequset.SetMainCmd(ProtocolMC.Main_Cmd_ROOM);
-        endRequset.SetSubCmd(ProtocolSC.Sub_Cmd_GAME_END);
-        endRequset.SetCommand(0);
-        List<int> datalist = new List<int>();
-        datalist.Add(GameInfo.Instance.roomId);//房间号
-        datalist.Add(GameInfo.Instance.positon);//位置
-        endRequset.SetData(datalist);
-        NettySocket.Instance.SendMsg(endRequset);//发送这条消息给服务器
-    //
-        nextBtn.gameObject.SetActive(false);
-    }
 
     // Update is called once per frame
     void Update()
@@ -210,35 +194,40 @@ public class roomAnimator : MonoBehaviour
     private void playLiuJuAnimator()
     {
         StartCoroutine(showHuNumber());
-        StartCoroutine(roundEnd());
     }
 
         //吃胡动画
     private void playChiHuAnimator(string pos)
     {
-        GameObject ani = Instantiate(Resources.Load("Prefab/Image_Animator_hupai")) as GameObject;
+        string path = "";
+        if (this.ChihuType == 1 || this.ChihuType == 2 || this.ChihuType == 3)
+        {
+            path = "Image_Animator_Action_GSP";
+        }
+        else
+        {
+            path = "Image_Animator_Action_Hu";
+        }
+        GameObject ani = Instantiate(Resources.Load("Prefab/"+ path)) as GameObject;
         ani.transform.SetParent(this.transform, false);
-        //ani.GetComponent<GameAnimator>().Play();
         gangPostion = pos;
         switch (pos)
         {
             case "bot":
-                ani.transform.localPosition = new Vector3(0, -120, 0);
+                ani.transform.localPosition = new Vector3(280, -140, 0);
                 break;
             case "right":
-                ani.transform.localPosition = new Vector3(270, 40, 0);
+                ani.transform.localPosition = new Vector3(430, 30, 0);
                 break;
             case "top":
-                ani.transform.localPosition = new Vector3(0, 200, 0);
+                ani.transform.localPosition = new Vector3(190, 240, 0);
                 break;
             case "left":
-                ani.transform.localPosition = new Vector3(-270, 40, 0);
+                ani.transform.localPosition = new Vector3(-430, 30, 0);
                 break;
         }
-
+        ani.GetComponent<GameAnimator_Move>().goMove(true);
         StartCoroutine(showHuNumber());
-        StartCoroutine(roundEnd());
-        Debug.Log("吃胡配音路径" + MajooUtil.getChiHuViocePath());
         AudioMgr.Instance.SoundPlay(MajooUtil.getChiHuViocePath(), 1, 0);
 
     }
@@ -246,28 +235,38 @@ public class roomAnimator : MonoBehaviour
     //自摸动画
     private void playZiMoAnimator(string pos)
     {
-        GameObject ani = Instantiate(Resources.Load("Prefab/Image_Animator_zimo")) as GameObject;
+        string path = "";
+        if (this.zimohuType == 12)
+        {
+            path = "Image_Animator_Action_QGH";
+        }
+        else if(this.zimohuType==1|| this.zimohuType == 2 || this.zimohuType == 3)
+        {
+            path = "Image_Animator_Action_GSKH";
+        }
+        else
+        {
+            path = "Image_Animator_Action_Zimo";
+        }
+        GameObject ani = Instantiate(Resources.Load("Prefab/"+ path)) as GameObject;
         ani.transform.SetParent(this.transform, false);
-        //ani.GetComponent<GameAnimator>().Play();
         switch (pos)
         {
             case "bot":
-                ani.transform.localPosition = new Vector3(0, -120, 0);
+                ani.transform.localPosition = new Vector3(280, -140, 0);
                 break;
             case "right":
-                ani.transform.localPosition = new Vector3(270, 40, 0);
+                ani.transform.localPosition = new Vector3(430, 30, 0);
                 break;
             case "top":
-                ani.transform.localPosition = new Vector3(0, 200, 0);
+                ani.transform.localPosition = new Vector3(240, 200, 0);
                 break;
             case "left":
-                ani.transform.localPosition = new Vector3(-270, 40, 0);
+                ani.transform.localPosition = new Vector3(-430, 30, 0);
                 break;
         }
-        Debug.Log("延迟显示结算数字");
+        ani.GetComponent<GameAnimator_Move>().goMove(true);
         StartCoroutine(showHuNumber());
-        Debug.Log("延迟显示结果按键");
-        StartCoroutine(roundEnd());
         if (this.zimohuType == 12)//抢杠胡
         {
             AudioMgr.Instance.SoundPlay(MajooUtil.getChiHuViocePath(), 1, 0);
@@ -282,32 +281,44 @@ public class roomAnimator : MonoBehaviour
     //碰牌动画
     private void playPengAnimator(string pos)
     {
-        GameObject ani = Instantiate(Resources.Load("Prefab/Image_Animator_peng")) as GameObject;
+        GameObject ani = Instantiate(Resources.Load("Prefab/Image_Animator_Action_Peng")) as GameObject;
         ani.transform.SetParent(this.transform, false);
-        //ani.GetComponent<GameAnimator>().Play();
         switch (pos)
         {
             case "bot":
-                ani.transform.localPosition = new Vector3(0, -120, 0);
+                ani.transform.localPosition = new Vector3(280, -140, 0);
                 break;
             case "right":
-                ani.transform.localPosition = new Vector3(270, 40, 0);
+                ani.transform.localPosition = new Vector3(430, 30, 0);
                 break;
             case "top":
-                ani.transform.localPosition = new Vector3(0, 200, 0);
+                ani.transform.localPosition = new Vector3(190, 240, 0);
                 break;
             case "left":
-                ani.transform.localPosition = new Vector3(-270, 40, 0);
+                ani.transform.localPosition = new Vector3(-430, 30, 0);
                 break;
         }
-        //mjCard.transform.localScale = new Vector3(1.2f, 1.2f, 1);
+        ani.GetComponent<GameAnimator_Move>().goMove(true);
     }
 
     //杠牌动画
     private void playGangAnimator(string pos)
     {
-        GameObject longjuanfeng = Instantiate(Resources.Load("Prefab/Image_Animator_longjuanfeng")) as GameObject;
+        string path1 = "";
+        string path2 = "";
+        if (this.gangType == 3)
+        {
+            path1 = "Image_Animator_XiaLu";
+            path2 = "Image_Animator_Action_XiaYu";
+        }
+        else
+        {
+            path1 = "Image_Animator_longjuanfeng";
+            path2 = "Image_Animator_Action_GuaFeng";
+        }
+        GameObject longjuanfeng = Instantiate(Resources.Load("Prefab/"+ path1)) as GameObject;
         longjuanfeng.transform.SetParent(this.transform, false);
+        longjuanfeng.transform.SetSiblingIndex(0);
         gangPostion = pos;
         switch (pos)
         {
@@ -318,33 +329,32 @@ public class roomAnimator : MonoBehaviour
                 longjuanfeng.transform.localPosition = new Vector3(260, 150, 0);
                 break;
             case "top":
-                longjuanfeng.transform.localPosition = new Vector3(40, 280, 0);
+                longjuanfeng.transform.localPosition = new Vector3(20, 270, 0);
                 break;
             case "left":
                 longjuanfeng.transform.localPosition = new Vector3(-230, 150, 0);
                 break;
         }
-
-        GameObject ani = Instantiate(Resources.Load("Prefab/Image_Animator_gang")) as GameObject;
+        //
+        GameObject ani = Instantiate(Resources.Load("Prefab/"+ path2)) as GameObject;
         ani.transform.SetParent(this.transform, false);
-        //ani.GetComponent<GameAnimator>().Play();
         switch (pos)
         {
             case "bot":
-                ani.transform.localPosition = new Vector3(0, -120, 0);
+                ani.transform.localPosition = new Vector3(280, -140, 0);
                 break;
             case "right":
-                ani.transform.localPosition = new Vector3(270, 40, 0);
+                ani.transform.localPosition = new Vector3(430, 30, 0);
                 break;
             case "top":
-                ani.transform.localPosition = new Vector3(0, 200, 0);
+                ani.transform.localPosition = new Vector3(190, 240, 0);
                 break;
             case "left":
-                ani.transform.localPosition = new Vector3(-270, 40, 0);
+                ani.transform.localPosition = new Vector3(-430, 30, 0);
                 break;
         }
-        //mjCard.transform.localScale = new Vector3(1.2f, 1.2f, 1);
-        Invoke("showNumer", 1);
+        ani.GetComponent<GameAnimator_Move>().goMove(true);
+        Invoke("showNumer", 2);
     }
 
     //开局动画
@@ -352,28 +362,17 @@ public class roomAnimator : MonoBehaviour
     {
         GameObject ani = Instantiate(Resources.Load("Prefab/Image_Animator_duijukaishi")) as GameObject;
         ani.transform.SetParent(this.transform, false);
-        //ani.GetComponent<GameAnimator>().Play();
         ani.transform.localPosition = new Vector3(0, 20, 0);
-        //mjCard.transform.localScale = new Vector3(1.2f, 1.2f, 1);
-    }
-
-    private IEnumerator roundEnd()
-    {
-        yield return new WaitForSeconds(5);
-        Debug.Log("显示结果按键");
-        nextBtn.gameObject.SetActive(true);
     }
 
     private IEnumerator showHuNumber()
     {
-        yield return new WaitForSeconds(1);
-        Debug.Log("显示结算数字 plist长度="+ plist.Count);
+        yield return new WaitForSeconds(2.5f);
         int hutype = 0;
         for (int i = 0; i < this.plist.Count; i++)
         {
             PlayerData pd = plist[i];
             hutype=pd.getHupai();
-            Debug.Log("i="+i+" 结算=" + pd.getWinGold());
             string pos = "";
             if (pd.getWinGold() != 0)
             {
@@ -385,8 +384,7 @@ public class roomAnimator : MonoBehaviour
                 {
                     pos = GameInfo.Instance.TryGetLocPos(GameInfo.Instance.positon, pd.getUserId());
                 }
-                Debug.Log("pos 结算="+ pd.getWinGold());
-                if (hutype != 10)//如果是 10 就是流局 ，没数值
+                if (hutype != 11)//如果是 10 就是流局 ，没数值
                 {
                     switch (pos)
                     {
@@ -408,48 +406,48 @@ public class roomAnimator : MonoBehaviour
             }
         }
         //
-        Debug.Log("胡牌的类型="+ hutype);
+        //Debug.Log("胡牌的类型="+ hutype);
         switch (hutype)
         {
-            case MajooUtil.HuPai_PaiXing__DaDuiZi_大对子:
-            case MajooUtil.HuPai_PaiXing__QingDaDui_清大对:
-                this.imgHuType.transform.gameObject.SetActive(true);
-                Sprite sp1 = Resources.Load("Texture/game/xiaojiesuan/HuType_2", typeof(Sprite)) as Sprite;
-                this.imgHuType.sprite = sp1;
-                break;
-            case MajooUtil.HuPai_PaiXing__QingYiSe_清一色:
-                this.imgHuType.transform.gameObject.SetActive(true);
-                Sprite sp2 = Resources.Load("Texture/game/xiaojiesuan/HuType_" + hutype, typeof(Sprite)) as Sprite;
-                this.imgHuType.sprite = sp2;
-                break;
-            case MajooUtil.HuPai_PaiXing__XiaoQiDui_小七对:
-            case MajooUtil.HuPai_PaiXing__QingQiDui_清七对:
-                this.imgHuType.transform.gameObject.SetActive(true);
-                Sprite sp3 = Resources.Load("Texture/game/xiaojiesuan/HuType_4", typeof(Sprite)) as Sprite;
-                this.imgHuType.sprite = sp3;
-                break;
-            case MajooUtil.HuPai_PaiXing__LongQiDui_龙七对:
-            case MajooUtil.HuPai_PaiXing__QingLongQiDui_清龙七对:
-                this.imgHuType.transform.gameObject.SetActive(true);
-                Sprite sp4 = Resources.Load("Texture/game/xiaojiesuan/HuType_6", typeof(Sprite)) as Sprite;
-                this.imgHuType.sprite = sp4;
-                break;
-            case MajooUtil.HuPai_PaiXing__ShuangLongQiDui_双龙七对:
-            case MajooUtil.HuPai_PaiXing__ShuangQingLongQiDui_双清龙七对:
-                this.imgHuType.transform.gameObject.SetActive(true);
-                Sprite sp5 = Resources.Load("Texture/game/xiaojiesuan/HuType_8" , typeof(Sprite)) as Sprite;
-                this.imgHuType.sprite = sp5;
-                break;
+            //    case MajooUtil.HuPai_PaiXing__DaDuiZi_大对子:
+            //    case MajooUtil.HuPai_PaiXing__QingDaDui_清大对:
+            //        this.imgHuType.transform.gameObject.SetActive(true);
+            //        Sprite sp1 = Resources.Load("Texture/game/xiaojiesuan/HuType_2", typeof(Sprite)) as Sprite;
+            //        this.imgHuType.sprite = sp1;
+            //        break;
+            //    case MajooUtil.HuPai_PaiXing__QingYiSe_清一色:
+            //        this.imgHuType.transform.gameObject.SetActive(true);
+            //        Sprite sp2 = Resources.Load("Texture/game/xiaojiesuan/HuType_" + hutype, typeof(Sprite)) as Sprite;
+            //        this.imgHuType.sprite = sp2;
+            //        break;
+            //    case MajooUtil.HuPai_PaiXing__XiaoQiDui_小七对:
+            //    case MajooUtil.HuPai_PaiXing__QingQiDui_清七对:
+            //        this.imgHuType.transform.gameObject.SetActive(true);
+            //        Sprite sp3 = Resources.Load("Texture/game/xiaojiesuan/HuType_4", typeof(Sprite)) as Sprite;
+            //        this.imgHuType.sprite = sp3;
+            //        break;
+            //    case MajooUtil.HuPai_PaiXing__LongQiDui_龙七对:
+            //    case MajooUtil.HuPai_PaiXing__QingLongQiDui_清龙七对:
+            //        this.imgHuType.transform.gameObject.SetActive(true);
+            //        Sprite sp4 = Resources.Load("Texture/game/xiaojiesuan/HuType_6", typeof(Sprite)) as Sprite;
+            //        this.imgHuType.sprite = sp4;
+            //        break;
+            //    case MajooUtil.HuPai_PaiXing__ShuangLongQiDui_双龙七对:
+            //    case MajooUtil.HuPai_PaiXing__ShuangQingLongQiDui_双清龙七对:
+            //        this.imgHuType.transform.gameObject.SetActive(true);
+            //        Sprite sp5 = Resources.Load("Texture/game/xiaojiesuan/HuType_8" , typeof(Sprite)) as Sprite;
+            //        this.imgHuType.sprite = sp5;
+            //        break;
             case MajooUtil.HuPai_PaiXing__LiuJu_流局:
-                this.imgHuType.transform.gameObject.SetActive(true);
-                Sprite sp6 = Resources.Load("Texture/game/xiaojiesuan/HuType_" + hutype, typeof(Sprite)) as Sprite;
-                this.imgHuType.sprite = sp6;
-                break;
-            case MajooUtil.HuPai_PaiXing__QiangGang_抢杠:
-                this.imgHuType.transform.gameObject.SetActive(true);
-                Sprite sp7 = Resources.Load("Texture/game/xiaojiesuan/HuType_" + hutype, typeof(Sprite)) as Sprite;
-                this.imgHuType.sprite = sp7;
-                break;
+                    this.imgHuType.transform.gameObject.SetActive(true);
+                    Sprite sp6 = Resources.Load("Sprite/table/HuType_" + hutype, typeof(Sprite)) as Sprite;
+                    this.imgHuType.sprite = sp6;
+                    break;
+        //    case MajooUtil.HuPai_PaiXing__QiangGang_抢杠:
+        //        this.imgHuType.transform.gameObject.SetActive(true);
+        //        Sprite sp7 = Resources.Load("Texture/game/xiaojiesuan/HuType_" + hutype, typeof(Sprite)) as Sprite;
+        //        this.imgHuType.sprite = sp7;
+        //        break;
         }
 
         StartCoroutine(hideImgHuType());
@@ -457,13 +455,13 @@ public class roomAnimator : MonoBehaviour
 
     private IEnumerator hideImgHuType()
     {
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(2);
         this.imgHuType.transform.gameObject.SetActive(false);
+        GameInfo.Instance.isEndStat = 1;
     }
 
     private void showNumer()
     {
-        Debug.Log("杠牌类型="+ gangType+"杠牌位置="+ gangPostion);
         switch (this.gangType)
         {
             case 1://直杠
@@ -482,7 +480,6 @@ public class roomAnimator : MonoBehaviour
                                 leftNum.GetComponent<Number>().showNumber(200);
                                 break;
                         }
-                        Debug.Log("杠牌类型="+ gangType+"放杠位置="+ fangGangPos);
                         if (fangGangPos == GameInfo.Instance.positon)
                         {
                             myNum.GetComponent<Number>().showNumber(-200);

@@ -28,7 +28,7 @@ public class Warning : MonoBehaviour
         if (value != null)
         {
             //delay时间后执行close函数  
-            Invoke("close", 10);
+            Invoke("close", 2);
         }
         gameObject.SetActive(true);
     }

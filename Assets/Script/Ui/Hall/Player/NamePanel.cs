@@ -41,7 +41,6 @@ public class NamePanel : MonoBehaviour {
         reNameRequset.SetSubCmd(ProtocolSC.Sub_Cmd_HALL_CHANGENAME);
         reNameRequset.SetCommand(0);
         List<string> message = new List<string>();
-        message.Add(GameInfo.Instance.UserID.ToString());
         message.Add(inputText.text);
         reNameRequset.SetMessage(message);
         NettySocket.Instance.SendMsg(reNameRequset);//发送这条消息给服务器

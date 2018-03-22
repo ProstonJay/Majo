@@ -30,10 +30,10 @@ public class GameEvent : MonoBehaviour {
     public delegate void ChuPai(int pos, int data,Boolean iskeep);//出牌
     public static event ChuPai ChuPaiEvent;
 
-    public delegate void JieSuan(List<PlayerData> plist);//小结算
+    public delegate void JieSuan();//小结算
     public static event JieSuan JieSuanEvent;
 
-    public delegate void ZongJieSuan(List<PlayerData> plist);//总结算
+    public delegate void ZongJieSuan();//总结算
     public static event ZongJieSuan ZongJieSuanEvent;
 
     public delegate void ReSetRoom();//重置
@@ -41,6 +41,40 @@ public class GameEvent : MonoBehaviour {
 
     public delegate void NetSocket(int value);//通讯
     public static event NetSocket NetSocketEvent;
+
+    public delegate void ChatSocket(int pos,int value);//聊天
+    public static event ChatSocket ChatSocketEvent;
+
+    public delegate void UpdateFkSocket();
+    public static event UpdateFkSocket UpdateFkEvent;
+
+    ///更新钻石
+    public static void UpdateFk()
+    {
+        if (UpdateFkEvent != null)
+        {
+            UpdateFkEvent();
+        }
+        else
+        {
+            Debug.Log("UpdateFkEvent is Empty");
+        }
+
+    }
+
+    ///聊天
+    public static void DoChat(int pos, int value)
+    {
+        if (ChatSocketEvent != null)
+        {
+            ChatSocketEvent(pos,value);
+        }
+        else
+        {
+            Debug.Log("ChatSocketEvent is Empty");
+        }
+
+    }
 
     ///通讯
     public static void DoNetSocket(int value)
@@ -57,11 +91,11 @@ public class GameEvent : MonoBehaviour {
     }
 
     //总结算
-    public static void DoZongJieSuan(List<PlayerData> plist)
+    public static void DoZongJieSuan()
     {
         if (ZongJieSuanEvent != null)
         {
-            ZongJieSuanEvent(plist);
+            ZongJieSuanEvent();
         }
         else
         {
@@ -86,11 +120,11 @@ public class GameEvent : MonoBehaviour {
 
 
     //结算
-    public static void DoJieSuan(List<PlayerData> plist)
+    public static void DoJieSuan()
     {
         if (JieSuanEvent != null)
         {
-            JieSuanEvent(plist);
+            JieSuanEvent();
         }
         else
         {

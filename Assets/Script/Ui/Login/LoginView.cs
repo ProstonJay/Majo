@@ -9,15 +9,20 @@ public class LoginView : MonoBehaviour
 {
 
     Button loginBtn;
+    public Button xieyiBtn;
+    public GameObject  xieyiPanel;
 
     Transform root;
 
     private int connectFlag;
 
+    public Toggle blueToggle;
+
 
     // Use this for initialization
     void Awake()
     {
+        Application.targetFrameRate = 30;
         GameEvent.SocketConnetEvent += SocketConnet;
     }
     private void SocketConnet(string str)
@@ -33,6 +38,8 @@ public class LoginView : MonoBehaviour
         loginBtn = root.Find("Button_ok").GetComponent<Button>();
         //注册点击事件
         loginBtn.onClick.AddListener(LoginPressed);
+        xieyiBtn.onClick.AddListener(PressedXieyi);
+        //
 
         setLocData();
     }
@@ -41,14 +48,15 @@ public class LoginView : MonoBehaviour
     {
         if (str != "")
         {
-            GameInfo.Instance.DeviceID = SystemInfo.deviceType + "|" + SystemInfo.deviceUniqueIdentifier;
+            GameInfo.Instance.DeviceID =  SystemInfo.deviceUniqueIdentifier;
             SceneManager.LoadScene(str);
             LoginView.str = "";
         }
         if (connectFlag == 1)
         {
-            loginRequst();
             connectFlag = 0;
+            loginRequst();
+         
         }
     }
 
@@ -60,6 +68,11 @@ public class LoginView : MonoBehaviour
     //登录
     public void LoginPressed()
     {
+        if (!blueToggle.isOn)
+        {
+            GameEvent.DoMsgTipEvent("未同意用户使用协议!");
+            return;
+        }
         AudioMgr.Instance.SoundPlay("btnClick", 1f, 2);
         NettySocket.Instance.Conenet();
     }
@@ -67,10 +80,10 @@ public class LoginView : MonoBehaviour
     //服务器连接上,发送登录请求
     private void loginRequst()
     {
+        GameEvent.DoNetSocket(1);
         GameEvent.DoMsgTipEvent("请求登录数据");
         //
-        Debug.Log(SystemInfo.deviceUniqueIdentifier + "SystemInfo.deviceUniqueIdentifier");
-        string deviceUID = SystemInfo.deviceType+"|"+ SystemInfo.deviceUniqueIdentifier;
+        string deviceUID =  SystemInfo.deviceUniqueIdentifier;
         //
         SocketModel LoginRequset = new SocketModel();
         LoginRequset.SetMainCmd(ProtocolMC.Main_Cmd_LOGIN);//消息的类型为Login
@@ -86,14 +99,19 @@ public class LoginView : MonoBehaviour
         //如果有缓存,初始化
         if (PlayerPrefs.HasKey("ok")==false)
         {
-            Debug.Log("没有缓存");
             //缓存
             PlayerPrefs.SetString("ok", "true");
             PlayerPrefs.SetString("TableColor", "blue");
-            PlayerPrefs.SetString("Language", "pt");
+            PlayerPrefs.SetString("Language", "sc");
             PlayerPrefs.SetString("music", "on");
             PlayerPrefs.SetString("sound", "on");
             PlayerPrefs.SetString("vioce", "on");
         }
     }
+
+    private void PressedXieyi()
+    {
+        xieyiPanel.SetActive(true);
+    }
+
 }

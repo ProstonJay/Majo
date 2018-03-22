@@ -10,7 +10,7 @@ public class Mj_left_out : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        Sprite sp = Resources.Load("Texture/game/mj/zuo/zuo_out", typeof(Sprite)) as Sprite;
+        Sprite sp = Resources.Load("Sprite/mj/zuo/zuo_out", typeof(Sprite)) as Sprite;
         bg.sprite = sp;
     }
 	
@@ -21,7 +21,7 @@ public class Mj_left_out : MonoBehaviour {
 
     public void setPic(string mjid)
     {
-        Sprite sp = Resources.Load("Texture/game/mj/zuo/zuo_" + mjid, typeof(Sprite)) as Sprite;
+        Sprite sp = Resources.Load("Sprite/mj/zuo/zuo_" + mjid, typeof(Sprite)) as Sprite;
         pic.sprite = sp;
     }
 }

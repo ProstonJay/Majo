@@ -6,12 +6,12 @@ using UnityEngine.UI;
 public class RoomJieSuan : MonoBehaviour {
 
     //小结算
-    private List<PlayerData> plaerlist;
+    private int jiesuanRound;
 
     //总结算
-    private List<PlayerData> zongPlaerlist;
+    private int jiesuanEnd;
 
-    public GameObject xiaojiesuan;
+    private GameObject xiaojiesuan;
     public GameObject dajiesuan;
 
     void Awake()
@@ -21,45 +21,40 @@ public class RoomJieSuan : MonoBehaviour {
     }
 
     //结算
-    private void JieSuanEvent(List<PlayerData> plist)
+    private void JieSuanEvent()
     {
-        plaerlist = plist;
+        jiesuanRound = 1;
 
     }
 
     //总结算
-    private void ZongJieSuanEvent(List<PlayerData> plist)
+    private void ZongJieSuanEvent()
     {
-        zongPlaerlist = plist;
+        jiesuanEnd = 1;
 
-    }
-
-    public void reset()
-    {
-        xiaojiesuan.gameObject.SetActive(false);
-        dajiesuan.gameObject.SetActive(false);
     }
 
     // Use this for initialization
     void Start () {
-        xiaojiesuan.gameObject.SetActive(false);
-        dajiesuan.gameObject.SetActive(false);
+
     }
 	
 	// Update is called once per frame
 	void Update () {
-        if (plaerlist != null && plaerlist.Count > 0)
+        if (jiesuanRound > 0)
         {
-            xiaojiesuan.gameObject.SetActive(true);
-            xiaojiesuan.GetComponent<XiaoJieSuan>().showJiesuan(plaerlist);
-            plaerlist.Clear();
+            xiaojiesuan = Instantiate(Resources.Load("Prefab/GameObject_jiesuan_round")) as GameObject;
+            xiaojiesuan.transform.SetParent(this.transform, false);
+            xiaojiesuan.GetComponent<XiaoJieSuan>().setJieSuanData();
+            jiesuanRound = 0;
         }
 
-        if (zongPlaerlist != null && zongPlaerlist.Count > 0)
+        if (jiesuanEnd > 0) 
         {
-            dajiesuan.gameObject.SetActive(true);
-            dajiesuan.GetComponent<DaJieSuan>().showJiesuan(zongPlaerlist);
-            zongPlaerlist.Clear();
+            dajiesuan = Instantiate(Resources.Load("Prefab/GameObject_jiesuan_gameOver")) as GameObject;
+            dajiesuan.transform.SetParent(this.transform, false);
+            dajiesuan.GetComponent<DaJieSuan>().showGameOver();
+            jiesuanEnd = 0;
         }
     }
 }

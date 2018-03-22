@@ -11,7 +11,7 @@ public class Action_AnGang : MonoBehaviour {
 
     public void setPic(string path)
     {
-        Sprite sp = Resources.Load("Texture/game/mj/" + path, typeof(Sprite)) as Sprite;
+        Sprite sp = Resources.Load("Sprite/mj/" + path, typeof(Sprite)) as Sprite;
         mj.sprite = sp;
     }
 

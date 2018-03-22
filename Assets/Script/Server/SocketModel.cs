@@ -6,26 +6,35 @@ using ProtoBuf;//注意要用到这个dll
 public class SocketModel
 {
     [ProtoMember(1)]
-    private int maincmd;
+    private string Token;
     [ProtoMember(2)]
-    private int subcmd;
+    private int maincmd;
     [ProtoMember(3)]
-    private int command;//指令
+    private int subcmd;
     [ProtoMember(4)]
-    private List<string> message;//消息
+    private int command;//指令
     [ProtoMember(5)]
-    private List<int> dataList;//消息
+    private List<string> message;//消息
     [ProtoMember(6)]
-    private List<PlayerData> pdata;//消息
+    private List<int> dataList;//消息
     [ProtoMember(7)]
+    private List<PlayerData> pdata;//消息
+    [ProtoMember(8)]
     private List<Action> adata;//数据
+    [ProtoMember(9)]
+    private List<MailData> mailList;//邮件
+    [ProtoMember(10)]
+    private List<BattleData> BattleList;
+
     public SocketModel()
     {
 
     }
-   public SocketModel(int maincmd, int subcmd, int command, List<string> message, List<int> datalist, List<PlayerData> pdata,
-       List<Action> adata)
+
+   public SocketModel(string tk,int maincmd, int subcmd, int command, List<string> message, List<int> datalist, List<PlayerData> pdata,
+       List<Action> adata, List<MailData> mdata)
     {
+        this.Token = tk;
         this.maincmd = maincmd;
         this.subcmd = subcmd;
         this.command = command;
@@ -33,6 +42,16 @@ public class SocketModel
         this.dataList = datalist;
         this.pdata = pdata;
         this.adata = adata;
+        this.mailList = mdata;
+    }
+
+    public string GetToken()
+    {
+        return Token;
+    }
+    public void SetToken(string value)
+    {
+        this.Token = value;
     }
     public int GetMainCmd()
     {
@@ -92,5 +111,23 @@ public class SocketModel
     public void SetAdata(List<Action> datalist)
     {
         this.adata = datalist;
+    }
+
+    public List<MailData> GetMailList()
+    {
+        return mailList;
+    }
+    public void SetMailList(List<MailData> list)
+    {
+        this.mailList = list;
+    }
+
+    public List<BattleData> GetBattleList()
+    {
+        return BattleList;
+    }
+    public void SetBattleList(List<BattleData> date)
+    {
+        this.BattleList = date;
     }
 }

@@ -5,63 +5,42 @@ using UnityEngine.UI;
 
 public class XiaoJieSuan : MonoBehaviour {
 
-    public GameObject myHead;
-    public GameObject rightHead;
-    public GameObject topHead;
-    public GameObject leftHead;
+    public GameObject GO_MyInfo;
+    public GameObject GO_RightInfo;
+    public GameObject GO_TopInfo;
+    public GameObject GO_LeftInfo;
 
     public Button nextGameBtn;
-
-    public GameObject myNum;
-    public GameObject rightNum;
-    public GameObject topNum;
-    public GameObject leftNum;
-
     //结算
     private List<PlayerData> plaerlist;
 
-    public void showJiesuan(List<PlayerData> plaerlist )
+    public void setJieSuanData( )
     {
-        for (int i=0;i< plaerlist.Count; i++)
+        List<PlayerData> plaerlist = GameInfo.Instance.jieSuanRoundData;
+        for (int i = 0; i < plaerlist.Count; i++)
         {
             PlayerData pd = plaerlist[i];
-            if (pd.getUserId() == GameInfo.Instance.positon)
+            string pos = "";
+            if (pd.getUserId() == GameInfo.Instance.positon) { pos = "bot"; } else {  pos = GameInfo.Instance.TryGetLocPos(GameInfo.Instance.positon, pd.getUserId()); }
+            switch (pos)
             {
-                myHead.GetComponent<headInfo>().SetHeadIcon(GameInfo.Instance.UserIcon);
-                myHead.GetComponent<headInfo>().SetPlayerName(GameInfo.Instance.UserName);
-                myNum.GetComponent<Number>().showNumber(pd.getWinGold(),true);
-                myHead.GetComponent<headInfo>().setZj(pd.getUserId());
-                Debug.Log("myHead 金币=" + pd.getWinGold());
+                case "bot":
+                    GO_MyInfo.GetComponent<JieSuanPanel>().initData(pd,1);
+                    break;
+                case "right":
+                    GO_RightInfo.GetComponent<JieSuanPanel>().initData(pd);
+                    break;
+                case "top":
+                    GO_TopInfo.GetComponent<JieSuanPanel>().initData(pd);
+                    break;
+                case "left":
+                    GO_LeftInfo.GetComponent<JieSuanPanel>().initData(pd);
+                    break;
             }
-            else
-            {
-                string pos = GameInfo.Instance.TryGetLocPos(GameInfo.Instance.positon,pd.getUserId());
-                Debug.Log("位置="+ pos + "金币=" + pd.getWinGold());
-                switch (pos)
-                {
-                    case "right":
-                            rightHead.GetComponent<headInfo>().SetHeadIcon(int.Parse(GameInfo.Instance.rightIcon));
-                            rightHead.GetComponent<headInfo>().SetPlayerName(GameInfo.Instance.rightName);
-                            rightHead.GetComponent<headInfo>().setZj(pd.getUserId());
-                            rightNum.GetComponent<Number>().showNumber(pd.getWinGold(), true);
-                        break;
-                    case "top":
-                            topHead.GetComponent<headInfo>().SetHeadIcon(int.Parse(GameInfo.Instance.topIcon));
-                            topHead.GetComponent<headInfo>().SetPlayerName(GameInfo.Instance.topName);
-                            topHead.GetComponent<headInfo>().setZj(pd.getUserId());
-                            topNum.GetComponent<Number>().showNumber(pd.getWinGold(), true);
-                        break;
-                    case "left":
-                            leftHead.GetComponent<headInfo>().SetHeadIcon(int.Parse(GameInfo.Instance.leftIcon));
-                            leftHead.GetComponent<headInfo>().SetPlayerName(GameInfo.Instance.leftName);
-                            leftHead.GetComponent<headInfo>().setZj(pd.getUserId());
-                            leftNum.GetComponent<Number>().showNumber(pd.getWinGold(), true);
-                        break;
-                }
 
-            }
-          
         }
+        GameInfo.Instance.jieSuanRoundData.Clear();
+        GameInfo.Instance.jieSuanRoundData = null;
     }
 
     // Use this for initialization
@@ -76,21 +55,18 @@ public class XiaoJieSuan : MonoBehaviour {
 
     public void nextGamePressed()
     {
-        GameEvent.DoReSetRoom();
-        setReady();
-        GameInfo.Instance.reset();
-    }
-
-    private void setReady()
-    {
-        SocketModel ReadyRequset = new SocketModel();
-        ReadyRequset.SetMainCmd(ProtocolMC.Main_Cmd_ROOM);
-        ReadyRequset.SetSubCmd(ProtocolSC.Sub_Cmd_GAME_READY);
-        ReadyRequset.SetCommand(0);
-        List<int> datalist = new List<int>();
-        datalist.Add(GameInfo.Instance.roomId);//房间号
-        datalist.Add(GameInfo.Instance.positon);//位置
-        ReadyRequset.SetData(datalist);
-        NettySocket.Instance.SendMsg(ReadyRequset);//发送这条消息给服务器
+        if (GameInfo.Instance.jieSuanEndData!=null)
+        {
+            GameEvent.DoZongJieSuan();
+            Destroy(this.transform.gameObject);
+        }
+        else
+        {
+            //重置数据
+            GameInfo.Instance.reset();
+            //重置界面
+            GameEvent.DoReSetRoom();
+            Destroy(this.transform.gameObject);
+        }
     }
 }

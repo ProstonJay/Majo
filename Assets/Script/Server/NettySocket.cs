@@ -15,8 +15,11 @@ public class NettySocket : MonoBehaviour
     //是否已连接的标识  
     //public bool IsConnected = false;
 
-
-    public static string ipArderrs = "192.168.0.111";
+        
+    //外网地址
+    public static string ipArderrs = "112.74.163.31";
+    //内网地址
+    //public static string ipArderrs = "192.168.0.107";
 
     private Thread threadReceive;
 
@@ -75,18 +78,18 @@ public class NettySocket : MonoBehaviour
         {
             clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             IPAddress ipAdress = IPAddress.Parse(ipArderrs);//解析IP地址
-            IPEndPoint ipEndPoint = new IPEndPoint(ipAdress, 6666);
+            IPEndPoint ipEndPoint = new IPEndPoint(ipAdress, 8228);
             IAsyncResult result = clientSocket.BeginConnect(ipEndPoint,new AsyncCallback(onConnectSuccess), clientSocket);
             bool success = result.AsyncWaitHandle.WaitOne(5000,true);
             if (!success)//超时
             {
-                GameEvent.DoNetSocket(2);
+                //GameEvent.DoNetSocket(2);
                 GameEvent.DoMsgEvent("连接服务器超时");
             }
         }
         catch(System.Net.Sockets.SocketException e)
         {
-            GameEvent.DoNetSocket(2);
+            //GameEvent.DoNetSocket(2);
             GameEvent.DoMsgEvent("连接服务器失败 e="+e.ErrorCode);
         }
     }
@@ -95,12 +98,11 @@ public class NettySocket : MonoBehaviour
     private void onConnectSuccess(IAsyncResult ar)
     {
         if ((ar.AsyncState as Socket).Connected){
-            GameEvent.DoMsgTipEvent("连接服务器成功");
             //开启线程接收数据
             threadReceive = new Thread(ReceiveMessage);
             threadReceive.IsBackground = true;
             threadReceive.Start();
-            GameEvent.DoMsgTipEvent("线程启动成功，准备登录");
+            GameEvent.DoMsgTipEvent("连接服务器成功，准备登录");
             //通知UI，继续登录
             GameEvent.DoSocketConnetEvent("connet");
         }else{
@@ -132,15 +134,14 @@ public class NettySocket : MonoBehaviour
     {
         if (clientSocket.Connected==false)
         {
-            Debug.Log("发数据：Sokcet 断开=" + clientSocket.Connected);
             GameEvent.DoMsgEvent("发数据：Sokcet 断开=" + clientSocket.Connected);
             return;
         }
         try
         {
-            GameEvent.DoMsgTipEvent("发送请求");
            // GameEvent.DoNetSocket(1);
             Debug.Log("发消息给服务器");
+            socketModel.SetToken(GameInfo.Instance.ToKen);
             byte[] msg = Serial(socketModel);
             //消息体结构：消息体长度+消息体
             byte[] data = new byte[4 + msg.Length];
@@ -167,7 +168,7 @@ public class NettySocket : MonoBehaviour
             if (clientSocket.Connected==false)
             {
                // LogTxt.text += "收数据：Sokcet 断开 =" + clientSocket.Connected + "/n";
-                //GameEvent.DoMsgEvent("收数据：Sokcet 断开 =" + clientSocket.Connected);
+                GameEvent.DoMsgEvent("收数据：Sokcet 断开 =" + clientSocket.Connected);
                 break;
             }
             try
@@ -231,12 +232,12 @@ public class NettySocket : MonoBehaviour
                 // Debug.Log("数据读取完了，可以解包了 数据长度 recvBytesBody = " + recvBytesBody.Length);
                 SocketModel message = DeSerial(recvBytesBody);
                 ServerManager.GetInstance().ReceiveMsg(message);
-                GameEvent.DoNetSocket(2);
+                //GameEvent.DoNetSocket(2);
             }
             catch (System.Net.Sockets.SocketException e) {
-                GameEvent.DoMsgEvent("收数据异常 e=" + e.ErrorCode+ "Connected="+ clientSocket.Connected);
+                GameEvent.DoMsgEvent("网络异常 e=" + e.ErrorCode + "Connected=" + clientSocket.Connected);
                 Debug.Log(" clientSocket.Connected=" + clientSocket.Connected);
-                Debug.Log("接收数据网络异常 Exception caught: "+e.ErrorCode);
+                Debug.Log("接收数据网络异常 Exception caught: " + e.ErrorCode);
                 Debug.Log("接收数据网络异常 Exception caught: " + e.SocketErrorCode);
                 Debug.Log("接收数据网络异常 Exception caught: " + e.NativeErrorCode);
                 clientSocket.Shutdown(SocketShutdown.Both);
@@ -292,7 +293,6 @@ public class NettySocket : MonoBehaviour
 
     void OnApplicationQuit()
     {
-        Debug.Log("OnApplicationQuit is used");
         Closed();
     }
 }

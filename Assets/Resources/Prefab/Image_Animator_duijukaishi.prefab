@@ -169,6 +169,7 @@ MonoBehaviour:
   Foward: 1
   AutoPlay: 1
   Loop: 0
+  UseSetNativeSize: 1
 --- !u!222 &222332560044085032
 CanvasRenderer:
   m_ObjectHideFlags: 1

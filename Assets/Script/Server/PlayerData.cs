@@ -24,24 +24,28 @@ public class PlayerData  {
     [ProtoMember(9)]
     private int winGold;//输赢金币
     [ProtoMember(10)]
-    private int zhiGang;//直杠次数
+    private int totalGang;//杠牌次数
     [ProtoMember(11)]
-    private int mingGang;//直杠次数
-    [ProtoMember(12)]
-    private int anGang;//直杠次数
-    [ProtoMember(13)]
     private int huPaicCunt;//胡牌次数
-    [ProtoMember(14)]
+    [ProtoMember(12)]
     private int fangPaoCunt;//放炮次数
+    [ProtoMember(13)]
+    private List<JsData> jsList;//小结算明细
+    [ProtoMember(14)]
+    private string dataStamp;//时间戳
+    [ProtoMember(15)]
+    private List<int> PghList;//可操作类型列表
+    [ProtoMember(16)]
+    private List<Action> GangList;//多个操作类型列表
 
-
-    // public PlayerData(string pn, int zj, int hupai, List<int> hl, List<int> al, List<int> ol = null)
     public PlayerData()
     {
 
     }
 
-    public PlayerData(int uid = 0, string pn = "", int pi = 0, int zj = 0, int hupai = 0, List<int> hl = null, List<Action> al = null, List<int> ol = null, int wg = 0, int zg = 0, int mg = 0, int ag = 0, int hp = 0, int fp = 0)
+    public PlayerData(int uid = 0, string pn = "", int pi = 0, int zj = 0, int hupai = 0, List<int> hl = null,
+        List<Action> al = null, List<int> ol = null, int wg = 0, int tg = 0, int hp = 0, int fp = 0, List<JsData> js = null,string ds="",
+        List<int> pghlist=null, List<Action> gangList=null)
     {
         this.userId = uid;
         this.playerName = pn;
@@ -52,11 +56,24 @@ public class PlayerData  {
         this.actionlist = al;
         this.outlist = ol;
         this.winGold = wg;
-        this.zhiGang = zg;
-        this.mingGang = mg;
-        this.anGang = ag;
+        this.totalGang = tg;
         this.huPaicCunt = hp;
         this.fangPaoCunt = fp;
+        this.jsList = js;
+        this.dataStamp = ds;
+        this.PghList=pghlist;
+        this.GangList = gangList;
+    }
+
+
+    public List<JsData> getJsList()
+    {
+        return jsList;
+    }
+
+    public void setJsList(List<JsData> list)
+    {
+        this.jsList = list;
     }
 
     public int getPlayerIcon()
@@ -68,29 +85,21 @@ public class PlayerData  {
         this.playerIcon = value;
     }
 
-    public int getZhiGang()
+    public int getTotalGang()
     {
-        return zhiGang;
+        return totalGang;
     }
-    public void setZhiGang(int value)
+    public void setTotalGang(int value)
     {
-        this.zhiGang = value;
+        this.totalGang = value;
     }
-    public int getMingGang()
+    public string getDataStamp()
     {
-        return mingGang;
+        return dataStamp;
     }
-    public void setMingGang(int value)
+    public void setDataStamp(string value)
     {
-        this.mingGang = value;
-    }
-    public int getAnGang()
-    {
-        return anGang;
-    }
-    public void setAnGang(int value)
-    {
-        this.anGang = value;
+        this.dataStamp = value;
     }
     public int getHuPaicCunt()
     {
@@ -187,5 +196,23 @@ public class PlayerData  {
     public void setoutlist(List<int> list)
     {
         this.outlist = list;
+    }
+
+    public List<Action> GetGangList()
+    {
+        return GangList;
+    }
+    public void SetGangList(List<Action> list)
+    {
+        this.GangList = list;
+    }
+
+    public List<int> GetPghList()
+    {
+        return PghList;
+    }
+    public void SetPghList(List<int> list)
+    {
+        this.PghList = list;
     }
 }

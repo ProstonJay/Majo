@@ -9,10 +9,10 @@ public class Top_out_Bin : MonoBehaviour {
     public void setPic(string mjId)
     {
         Image icon = transform.Find("Image_pic").GetComponent<Image>();
-        Sprite sp = Resources.Load("Texture/game/mj/shang/shang_" + mjId, typeof(Sprite)) as Sprite;
+        Sprite sp = Resources.Load("Sprite/mj/shang/shang_" + mjId, typeof(Sprite)) as Sprite;
         icon.sprite = sp;
 
-        Debug.Log("出牌配音路径" + MajooUtil.getChuPaiViocePath(mjId));
+        AudioMgr.Instance.SoundPlay("chuPai", 1f, 2);
         AudioMgr.Instance.SoundPlay(MajooUtil.getChuPaiViocePath(mjId), 1, 0);
     }
 

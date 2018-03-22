@@ -42,18 +42,7 @@ public class RoomAction : MonoBehaviour {
     //本轮可操作类型列表
     private void ActionListEvent(List<int> list)
     {
-        actlist = list;
-        if (actlist != null)
-        {
-            Debug.Log("操作列表 actlist=" + actlist + "长度=" + actlist.Count);
-           // GameEvent.DoMsgTipEvent("操作列表 actlist=" + actlist + "长度=" + actlist.Count);
-        }
-        else
-        {
-            //GameEvent.DoMsgTipEvent("操作列表 actlist 为 null");
-            Debug.Log("操作列表 actlist 为 null");
-        }
-      
+        actlist = list;  
     }
 
     //自摸
@@ -75,19 +64,13 @@ public class RoomAction : MonoBehaviour {
    
         if (actlist!=null)
         {
-          
             int count = actlist.Count;
             if (count > 0)
             {
-                //GameEvent.DoMsgEvent("操作列表 update actlist=" + actlist + "长度=" + actlist.Count);
                 doAction(actlist);
                 actlist.Clear();
             }
 
-        }
-        else
-        {
-            //GameEvent.DoMsgTipEvent("操作列表 update actlist 为 null");
         }
         //吃胡
         if (fangpaoPos > 0)
@@ -138,16 +121,16 @@ public class RoomAction : MonoBehaviour {
         switch (pos)
         {
             case "bot":
-                ani.transform.localPosition = new Vector3(0, -10, 0);
+                ani.transform.localPosition = new Vector3(0, 50, 0);
                 break;
             case "right":
-                ani.transform.localPosition = new Vector3(260, 150, 0);
+                ani.transform.localPosition = new Vector3(180, 150, 0);
                 break;
             case "top":
                 ani.transform.localPosition = new Vector3(0, 300, 0);
                 break;
             case "left":
-                ani.transform.localPosition = new Vector3(-260, 150, 0);
+                ani.transform.localPosition = new Vector3(-180, 150, 0);
                 break;
         }
     }
@@ -230,13 +213,19 @@ public class RoomAction : MonoBehaviour {
         mjStr = mj.ToString();
         if (isKeep == false)//如果是FALSE ,是没人会碰,吃操作,1秒以后通知打牌区添加这张牌
         {
-            Invoke("hideall", 1.5f);
+            hideall();
         }
     }
 
     //清除MJ而且添加到出牌
     public void hideall()
     {
+        StartCoroutine(RmoveOutMj());
+    }
+
+    private IEnumerator RmoveOutMj()
+    {
+        yield return new WaitForSeconds(1f);
         BotOutMj.gameObject.SetActive(false);
         RightOutMj.gameObject.SetActive(false);
         TopOutMj.gameObject.SetActive(false);
@@ -246,7 +235,6 @@ public class RoomAction : MonoBehaviour {
 
     public void addOutMj()
     {
-        Debug.Log("把所有出牌隐藏了，posStr="+ posStr+"添加到出牌区的牌="+ mjStr);
         if (posStr != "")
         {
             GameEvent.DoPlayEvent(posStr, mjStr);
@@ -300,7 +288,6 @@ public class RoomAction : MonoBehaviour {
         GangBtn.onClick.AddListener(GangPressed);
         HuBtn.onClick.AddListener(HuPressed);
         GuoBtn.onClick.AddListener(GuoPressed);
-        reset();
     }
 
     private void PengPressed()
@@ -387,12 +374,12 @@ public class RoomAction : MonoBehaviour {
         }
         else if (huType == CardView.CHI_GANG_抢杠)
         {
+            ActionRequset.SetCommand(1);
             ActionRequset.SetSubCmd(ProtocolSC.Sub_Cmd_GAME_QIANGGANG);
         }
         else if (huType == CardView.CHI_ZIMO_自摸) {
             ActionRequset.SetSubCmd(ProtocolSC.Sub_Cmd_GAME_ZIMO);
         }
-        ActionRequset.SetCommand(0);
         List<int> datalist = new List<int>();
         datalist.Add(GameInfo.Instance.roomId);//房间号
         datalist.Add(GameInfo.Instance.positon);//位置
@@ -405,8 +392,16 @@ public class RoomAction : MonoBehaviour {
         //告诉服务器摸牌
         SocketModel ActionRequset = new SocketModel();
         ActionRequset.SetMainCmd(ProtocolMC.Main_Cmd_ROOM);
-        ActionRequset.SetSubCmd(ProtocolSC.Sub_Cmd_GAME_GUOPAI);
-        ActionRequset.SetCommand(0);
+        if(huType == CardView.CHI_GANG_抢杠)
+        {
+            ActionRequset.SetCommand(2);
+            ActionRequset.SetSubCmd(ProtocolSC.Sub_Cmd_GAME_QIANGGANG);
+        }
+        else
+        {
+            ActionRequset.SetCommand(0);
+            ActionRequset.SetSubCmd(ProtocolSC.Sub_Cmd_GAME_GUOPAI);
+        }
         List<int> datalist = new List<int>();
         datalist.Add(GameInfo.Instance.roomId);//房间号
         datalist.Add(GameInfo.Instance.positon);//位置

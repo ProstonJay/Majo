@@ -41,17 +41,11 @@ public class TopControlBar : MonoBehaviour {
     private void LiuJuEvent(List<PlayerData> list)
     {
         liujuFlag = 1;
-        Debug.Log("list 数量 = " + list.Count);
         for (int i = 0; i < list.Count; i++)
         {
-            Debug.Log("top 找位置 = " + list[i].getUserId());
-            //Debug.Log("left leftPostion =" + GameInfo.Instance.leftPostion + "读取的位置 i=" + i + "取的位置 list[i].getUserId()=" + list[i].getUserId());
             if (list[i].getUserId() == GameInfo.Instance.topPostion)
             {
-                //Debug.Log("left 自摸 手牌数量=" + list[i].gethandlist().Count);
                 handList = list[i].gethandlist();
-                Debug.Log("top 手牌 数量 = " + handList.Count);
-                handList.Reverse();
             }
         }
 
@@ -66,12 +60,9 @@ public class TopControlBar : MonoBehaviour {
             this.zimoPos = pos;
             for (int i = 0; i < list.Count; i++)
             {
-                //Debug.Log("top topPostion =" + GameInfo.Instance.topPostion + "读取的位置 i=" + i + "取的位置 list[i].getUserId()=" + list[i].getUserId());
                 if (list[i].getUserId() == GameInfo.Instance.topPostion)
                 {
-                   // Debug.Log("top 自摸 手牌数量=" + list[i].gethandlist().Count);
                     handList = list[i].gethandlist();
-                   
                 }
             }
         }
@@ -87,10 +78,8 @@ public class TopControlBar : MonoBehaviour {
             this.chihuPos = pos;
             for (int i = 0; i < list.Count; i++)
             {
-                //Debug.Log("top topPostion =" + GameInfo.Instance.topPostion + "读取的位置 i=" + i + "取的位置 list[i].getUserId()=" + list[i].getUserId());
                 if (list[i].getUserId() == GameInfo.Instance.topPostion)
                 {
-                    //Debug.Log("top 吃胡 手牌数量=" + list[i].gethandlist().Count);
                     handList = list[i].gethandlist();
                 }
             }
@@ -220,13 +209,14 @@ public class TopControlBar : MonoBehaviour {
 
     private IEnumerator ShowA()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(4);
         //要把牌推倒,如果是当前位置胡了,要把胡的牌放到摸牌的地方
         this.reset();
+        handList.Sort((x, y) => -x.CompareTo(y));
         for (int i = 0; i < handList.Count; i++)
         {
             GameObject mjCard = Instantiate(Resources.Load("Prefab/GameObject_top_out_card")) as GameObject;
-            mjCard.transform.localPosition = new Vector3(i * 47 - 7, -80, 0);
+            mjCard.transform.localPosition = new Vector3(i * 47 - 30, -20, 0);
             mjCard.transform.SetParent(this.transform, false);
             mjCard.GetComponent<Mj_top_out>().setPic(handList[i].ToString());
             mjCard.transform.localScale = new Vector3(1f, 1f, 0);
@@ -284,10 +274,10 @@ public class TopControlBar : MonoBehaviour {
         //    mjCard.name = i.ToString();
         //    mjList.Add(mjCard);
         //}
-        //for (int i = 0; i < 1; i++)
+        //for (int i = 0; i < 10; i++)
         //{
         //    GameObject mjCard = Instantiate(Resources.Load("Prefab/GameObject_top_out_card")) as GameObject;
-        //    mjCard.transform.localPosition = new Vector3(i * 47-7, -80, 0);
+        //    mjCard.transform.localPosition = new Vector3(i * 47-30, -20, 0);
         //    mjCard.transform.SetParent(this.transform, false);
         //    mjCard.GetComponent<Mj_top_out>().setPic("23");
         //    mjCard.transform.localScale = new Vector3(1f, 1f, 0);
@@ -299,11 +289,11 @@ public class TopControlBar : MonoBehaviour {
 
     ///初始化发牌
     /// </summary>
-    public void initHandMj()
+    public void initHandMj(int count = 13)
     {
         if (GameInfo.Instance.topPostion > 0 && GameInfo.Instance.topName != "")
         {
-            for (int i = 0; i < 13; i++)
+            for (int i = 0; i < count; i++)
             {  
                 GameObject mjCard = Instantiate(Resources.Load("Prefab/GameObject_mj_top")) as GameObject;
                 mjCard.transform.localPosition = new Vector3(i * 46, 0, 0);

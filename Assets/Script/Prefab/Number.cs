@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,12 +32,12 @@ public class Number : MonoBehaviour {
         jj.gameObject.SetActive(true);
         if (clor == 1)
         {
-            Sprite sp = Resources.Load("Texture/game/number/r_+", typeof(Sprite)) as Sprite;
+            Sprite sp = Resources.Load("Sprite/number/r_+", typeof(Sprite)) as Sprite;
             jj.sprite = sp;
         }
         else
         {
-            Sprite sp = Resources.Load("Texture/game/number/b_-", typeof(Sprite)) as Sprite;
+            Sprite sp = Resources.Load("Sprite/number/b_-", typeof(Sprite)) as Sprite;
             jj.sprite = sp;
         }
 
@@ -47,12 +48,12 @@ public class Number : MonoBehaviour {
                 numb1.gameObject.SetActive(true);
                 if (clor == 1)
                 {
-                    Sprite sp = Resources.Load("Texture/game/number/r_" + strch[i], typeof(Sprite)) as Sprite;
+                    Sprite sp = Resources.Load("Sprite/number/r_" + strch[i], typeof(Sprite)) as Sprite;
                     numb1.sprite = sp;
                 }
                 else
                 {
-                    Sprite sp = Resources.Load("Texture/game/number/b_" + strch[i], typeof(Sprite)) as Sprite;
+                    Sprite sp = Resources.Load("Sprite/number/b_" + strch[i], typeof(Sprite)) as Sprite;
                     numb1.sprite = sp;
                 }
             }
@@ -61,12 +62,12 @@ public class Number : MonoBehaviour {
                 numb2.gameObject.SetActive(true);
                 if (clor == 1)
                 {
-                    Sprite sp = Resources.Load("Texture/game/number/r_" + strch[i], typeof(Sprite)) as Sprite;
+                    Sprite sp = Resources.Load("Sprite/number/r_" + strch[i], typeof(Sprite)) as Sprite;
                     numb2.sprite = sp;
                 }
                 else
                 {
-                    Sprite sp = Resources.Load("Texture/game/number/b_" + strch[i], typeof(Sprite)) as Sprite;
+                    Sprite sp = Resources.Load("Sprite/number/b_" + strch[i], typeof(Sprite)) as Sprite;
                     numb2.sprite = sp;
                 }
             }
@@ -75,12 +76,12 @@ public class Number : MonoBehaviour {
                 numb3.gameObject.SetActive(true);
                 if (clor == 1)
                 {
-                    Sprite sp = Resources.Load("Texture/game/number/r_" + strch[i], typeof(Sprite)) as Sprite;
+                    Sprite sp = Resources.Load("Sprite/number/r_" + strch[i], typeof(Sprite)) as Sprite;
                     numb3.sprite = sp;
                 }
                 else
                 {
-                    Sprite sp = Resources.Load("Texture/game/number/b_" + strch[i], typeof(Sprite)) as Sprite;
+                    Sprite sp = Resources.Load("Sprite/number/b_" + strch[i], typeof(Sprite)) as Sprite;
                     numb3.sprite = sp;
                 }
             }
@@ -89,20 +90,21 @@ public class Number : MonoBehaviour {
                 numb4.gameObject.SetActive(true);
                 if (clor == 1)
                 {
-                    Sprite sp = Resources.Load("Texture/game/number/r_" + strch[i], typeof(Sprite)) as Sprite;
+                    Sprite sp = Resources.Load("Sprite/number/r_" + strch[i], typeof(Sprite)) as Sprite;
                     numb4.sprite = sp;
                 }
                 else
                 {
-                    Sprite sp = Resources.Load("Texture/game/number/b_" + strch[i], typeof(Sprite)) as Sprite;
+                    Sprite sp = Resources.Load("Sprite/number/b_" + strch[i], typeof(Sprite)) as Sprite;
                     numb4.sprite = sp;
                 }
             }
 
         }
+        transform.DOPunchPosition(new Vector3(-200, 0, 0), 0.05f);
         if (isKeep == false)
         {
-            Invoke("resetNumber", 2);
+            Invoke("resetNumber", 1.5f);
         }
     }
 

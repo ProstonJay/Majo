@@ -5,52 +5,59 @@ using UnityEngine.UI;
 
 public class DaJiePreble : MonoBehaviour {
 
-    public Text zhiGangTxt;
-    public Text mingGangTxt;
-    public Text anGangTxt;
-
+    public Text playerName;
+    public Text Txt_ID;
+    public Text Txt_GangPai;
     public Text hupaiGangTxt;
     public Text dianpaoGangTxt;
-
     public Text goldTxt;
+    public Text Txt_DeFen;
+
+
 
     public Image paoshou;
     public Image dayingjia;
 
     public Image headIcon;
-    public Text playerName;
+ 
     public Image fangzhu;
 
     public void setData(PlayerData pd)
     {
-        zhiGangTxt.text = "x " + pd.getZhiGang().ToString();
-        mingGangTxt.text = "x " + pd.getMingGang().ToString();
-        anGangTxt.text = "x " + pd.getAnGang().ToString();
-
+        playerName.text = pd.getPlayerName();
+        Txt_ID.text = "ID:【 "+ pd .getUserId().ToString()+ " 】";
+        Txt_GangPai.text = "x " + pd.getTotalGang().ToString();
         hupaiGangTxt.text = "x " + pd.getHuPaicCunt().ToString();
         dianpaoGangTxt.text = "x " + pd.getFangPaoCunt().ToString();
-
         goldTxt.text =  pd.getWinGold().ToString();
-
-        Sprite sp = Resources.Load("Texture/Hall/head/head_" + pd.getPlayerIcon().ToString(), typeof(Sprite)) as Sprite;
+        int fen = pd.getWinGold() - 100000;
+        if (fen > 0)
+        {
+            Txt_DeFen.text = "+" + fen.ToString();
+        }
+        else
+        {
+            Txt_DeFen.text = fen.ToString();
+        }
+      
+        Sprite sp = Resources.Load("Sprite/head/head_" + pd.getPlayerIcon().ToString(), typeof(Sprite)) as Sprite;
         headIcon.sprite = sp;
 
         if (pd.getZhuangjia() == 1)
         {
-            fangzhu.gameObject.SetActive(true);
+            fangzhu.transform.gameObject.SetActive(true);
         }
 
-        playerName.text = pd.getPlayerName();
     }
 
     public void setPaoShou()
     {
-        paoshou.gameObject.SetActive(true);
+        paoshou.transform.gameObject.SetActive(true);
     }
 
     public void setDaYingJia()
     {
-        dayingjia.gameObject.SetActive(true);
+        dayingjia.transform.gameObject.SetActive(true);
     }
 
     // Use this for initialization

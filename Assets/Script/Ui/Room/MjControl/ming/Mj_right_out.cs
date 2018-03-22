@@ -10,7 +10,7 @@ public class Mj_right_out : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        Sprite sp = Resources.Load("Texture/game/mj/you/you_out", typeof(Sprite)) as Sprite;
+        Sprite sp = Resources.Load("Sprite/mj/you/you_out", typeof(Sprite)) as Sprite;
         bg.sprite = sp;
     }
 	
@@ -21,7 +21,7 @@ public class Mj_right_out : MonoBehaviour {
 
     public void setPic(string mjId)
     {
-        Sprite sp = Resources.Load("Texture/game/mj/you/you_" + mjId, typeof(Sprite)) as Sprite;
+        Sprite sp = Resources.Load("Sprite/mj/you/you_" + mjId, typeof(Sprite)) as Sprite;
         pic.sprite = sp;
     }
 }

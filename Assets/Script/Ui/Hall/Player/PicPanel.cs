@@ -130,7 +130,6 @@ public class PicPanel : MonoBehaviour {
         rePicRequset.SetSubCmd(ProtocolSC.Sub_Cmd_GAME_CHANGEICON);
         rePicRequset.SetCommand(0);
         List<string> message = new List<string>();
-        message.Add(GameInfo.Instance.UserID.ToString());
         message.Add(selectPicId.ToString());
         rePicRequset.SetMessage(message);
         NettySocket.Instance.SendMsg(rePicRequset);//发送这条消息给服务器

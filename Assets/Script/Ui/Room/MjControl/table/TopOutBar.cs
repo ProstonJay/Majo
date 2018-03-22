@@ -21,21 +21,17 @@ public class TopOutBar : MonoBehaviour {
         mj.Clear();
         mjTrueID = 0;
     }
-    // Use this for initialization
-    void Start()
+    //重连
+    public void ReJoinOut(List<int> olist = null)
     {
-        reset();
-        ///////////////
-        //List<int> list1 = new List<int>();
-        //list1.Add(14); list1.Add(14); list1.Add(15); list1.Add(16); list1.Add(17); list1.Add(24); list1.Add(24);
-        //list1.Add(34); list1.Add(34); list1.Add(34); list1.Add(38); list1.Add(44); list1.Add(44); list1.Add(47);
-        //list1.Add(14); list1.Add(14); list1.Add(15); list1.Add(16); list1.Add(17); list1.Add(24); list1.Add(24);
-        //for (int i = 0; i < list1.Count; i++)
-        //{
-        //    string mj = list1[i].ToString();
-        //    //最后显示  
-        //    chupai(mj);
-        //}
+        if (olist != null && olist.Count > 0)
+        {
+            for (int i = 0; i < olist.Count; i++)
+            {
+                int mjid = olist[i];
+                chupai(mjid.ToString());
+            }
+        }
     }
 
     // Update is called once per frame

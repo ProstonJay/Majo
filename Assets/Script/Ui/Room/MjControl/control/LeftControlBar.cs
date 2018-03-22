@@ -42,16 +42,11 @@ public class LeftControlBar : MonoBehaviour {
     private void LiuJuEvent(List<PlayerData> list)
     {
         liujuFlag = 1;
-        Debug.Log("list 数量 = " + list.Count);
         for (int i = 0; i < list.Count; i++)
         {
-            Debug.Log("left 找位置 = " + list[i].getUserId());
-            //Debug.Log("left leftPostion =" + GameInfo.Instance.leftPostion + "读取的位置 i=" + i + "取的位置 list[i].getUserId()=" + list[i].getUserId());
             if (list[i].getUserId() == GameInfo.Instance.leftPostion)
             {
                 handList = list[i].gethandlist();
-                Debug.Log("left 手牌 数量 = " + handList.Count);
-                handList.Reverse();
             }
         }
 
@@ -66,12 +61,9 @@ public class LeftControlBar : MonoBehaviour {
             this.zimoPos = pos;
             for (int i = 0; i < list.Count; i++)
             {
-                //Debug.Log("left leftPostion =" + GameInfo.Instance.leftPostion + "读取的位置 i=" + i + "取的位置 list[i].getUserId()=" + list[i].getUserId());
                 if (list[i].getUserId() == GameInfo.Instance.leftPostion)
                 {
-                    //Debug.Log("left 自摸 手牌数量=" + list[i].gethandlist().Count);
                     handList = list[i].gethandlist();
-                    handList.Reverse();
                 }
             }
         }
@@ -87,10 +79,8 @@ public class LeftControlBar : MonoBehaviour {
             this.chihuPos = pos;
             for (int i = 0; i < list.Count; i++)
             {
-                //Debug.Log("left leftPostion =" + GameInfo.Instance.leftPostion + "读取的位置 i=" + i + "取的位置 list[i].getUserId()=" + list[i].getUserId());
                 if (list[i].getUserId() == GameInfo.Instance.leftPostion)
                 {
-                    //Debug.Log("left 吃胡 手牌数量=" + list[i].gethandlist().Count);
                     handList = list[i].gethandlist();
                 }
             }
@@ -220,9 +210,10 @@ public class LeftControlBar : MonoBehaviour {
 
     private IEnumerator ShowA()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(4);
         //要把牌推倒,如果是当前位置胡了,要把胡的牌放到摸牌的地方
         this.reset();
+        handList.Sort((x, y) => -x.CompareTo(y));
         for (int i = 0; i < handList.Count; i++)
         {
             GameObject mjcard = Instantiate(Resources.Load("prefab/gameobject_left_out_card")) as GameObject;
@@ -297,11 +288,11 @@ public class LeftControlBar : MonoBehaviour {
 
     ///初始化发牌
     /// </summary>
-    public void initHandMj()
+    public void initHandMj(int count = 13)
     {
         if (GameInfo.Instance.leftPostion > 0 && GameInfo.Instance.leftName != "")
         {
-            for (int i = 0; i < 13; i++)
+            for (int i = 0; i < count; i++)
             {
                 GameObject mjCard = Instantiate(Resources.Load("Prefab/GameObject_mj_left")) as GameObject;
                 mjCard.transform.localPosition = new Vector3(i * 10, i * 35, 0);

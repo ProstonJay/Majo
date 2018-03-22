@@ -33,6 +33,14 @@ public class NetSocketMask : MonoBehaviour {
     {
         value = 0;
         pic.transform.gameObject.SetActive(true);
+        StartCoroutine(TimeOut());
+    }
+
+    private IEnumerator TimeOut()
+    {
+        yield return new WaitForSeconds(5f);
+        GameEvent.DoMsgEvent("服务器连接失败！");
+        showUp(false);
     }
 
     // Update is called once per frame

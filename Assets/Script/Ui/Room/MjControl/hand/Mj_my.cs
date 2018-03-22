@@ -16,7 +16,7 @@ public class Mj_my : MonoBehaviour , IPointerClickHandler
     // Use this for initialization
     void Start () {
 
-        Sprite sp = Resources.Load("Texture/game/mj/xia/z_banzi", typeof(Sprite)) as Sprite;
+        Sprite sp = Resources.Load("Sprite/mj/xia/z_banzi", typeof(Sprite)) as Sprite;
         bg.sprite = sp;
     }
 	
@@ -27,7 +27,7 @@ public class Mj_my : MonoBehaviour , IPointerClickHandler
 
     public void setPic(string str)
     {
-        Sprite sp = Resources.Load("Texture/game/mj/xia/z_"+str, typeof(Sprite)) as Sprite;
+        Sprite sp = Resources.Load("Sprite/mj/xia/z_" + str, typeof(Sprite)) as Sprite;
         pic.sprite = sp;
     }
 
@@ -36,6 +36,7 @@ public class Mj_my : MonoBehaviour , IPointerClickHandler
         //Debug.Log("连击次数" + eventData.clickCount);
         //Debug.Log("鼠标位置" + eventData.position);
         SendMessageUpwards("SelectCard", this.name);
+        AudioMgr.Instance.SoundPlay("xuanPai", 1f, 2);
     }
 
     public void setUp() {

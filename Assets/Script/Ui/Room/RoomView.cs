@@ -33,6 +33,10 @@ public class RoomView : MonoBehaviour {
     private string chiHuPos;
     //更新剩余牌
     private int mjNum = -1;
+    //玩家掉线
+    private int offLinePos;
+    //玩家上线
+    private int onLinePos;
 
     private List<PlayerData> plist = new List<PlayerData>();
 
@@ -44,7 +48,21 @@ public class RoomView : MonoBehaviour {
         RoomEvent.ZiMoEvent += ZiMoEvent;
         RoomEvent.ChiHuEvent += ChiHuEvent;
         RoomEvent.LeftMjEvent += LeftMjEvent;
+        RoomEvent.PlayerOffLineEvent += PlayerOffLineEvent;
+        RoomEvent.PlayerOnLineEvent += PlayerOnLineEvent;
 
+    }
+
+    //玩家上线了 
+    private void PlayerOnLineEvent(int value)
+    {
+        onLinePos = value;
+    }
+
+    //玩家掉线 
+    private void PlayerOffLineEvent(int value)
+    {
+        offLinePos = value;
     }
 
     //更新剩余牌
@@ -71,16 +89,16 @@ public class RoomView : MonoBehaviour {
 
 
     //直杠
-    private void ZhiGangEvent(string pos, int mj, int fanggangpos)
+    private void ZhiGangEvent(string pos, int mj, int fg)
     {
         this.zhiGangPos = pos;
-        if (fanggangpos == GameInfo.Instance.positon)
+        if (fg == GameInfo.Instance.positon)
         {
             this.fangGangPos = "bot";
         }
         else
         {
-            this.fangGangPos = GameInfo.Instance.TryGetLocPos(GameInfo.Instance.positon, fanggangpos);
+            this.fangGangPos = GameInfo.Instance.TryGetLocPos(GameInfo.Instance.positon, fg);
         }
        
     }
@@ -112,15 +130,10 @@ public class RoomView : MonoBehaviour {
     }
     // Use this for initialization
     void Start () {
-        //botPos.gameObject.SetActive(false);
-        //rightPos.gameObject.SetActive(false);
-        //topPos.gameObject.SetActive(false);
-        //leftPos.gameObject.SetActive(false);
-
+  
     }
-	
-	// Update is called once per frame
-	void Update () {
+    // Update is called once per frame
+    void Update () {
         if (this.mjNum >=0)
         {
             updateMjNum(mjNum);
@@ -157,6 +170,53 @@ public class RoomView : MonoBehaviour {
             zhiGangPos = "";
             fangGangPos = "";
         }
+        //掉线
+        if (this.offLinePos >0)
+        {
+            PlayerOffLine();
+            offLinePos = 0;
+        }
+        //上线
+        if (this.onLinePos > 0)
+        {
+            PlayerOnLine();
+            onLinePos = 0;
+        }
+        
+    }
+
+    private void PlayerOnLine()
+    {
+        string pos = GameInfo.Instance.TryGetLocPos(GameInfo.Instance.positon, onLinePos);
+        switch (pos)
+        {
+            case "right":
+                RightHead.GetComponent<headInfo>().SetOffLine(false);
+                break;
+            case "top":
+                TopHead.GetComponent<headInfo>().SetOffLine(false);
+                break;
+            case "left":
+                LeftHead.GetComponent<headInfo>().SetOffLine(false);
+                break;
+        }
+    }
+
+    private void PlayerOffLine()
+    {
+        string pos = GameInfo.Instance.TryGetLocPos(GameInfo.Instance.positon, offLinePos);
+        switch (pos)
+        {
+            case "right":
+                RightHead.GetComponent<headInfo>().SetOffLine(true);
+                break;
+            case "top":
+                TopHead.GetComponent<headInfo>().SetOffLine(true);
+                break;
+            case "left":
+                LeftHead.GetComponent<headInfo>().SetOffLine(true);
+                break;
+        }
     }
 
     //自摸
@@ -179,22 +239,17 @@ public class RoomView : MonoBehaviour {
                 case "bot":
                     GameInfo.Instance.myGold += pd.getWinGold();
                     BotHead.GetComponent<headInfo>().setPlayerGold(GameInfo.Instance.myGold);
-                    Debug.Log("bot 胡牌类型=" + pd.getHupai()+"输赢="+pd.getWinGold()+"bot金币="+ GameInfo.Instance.myGold);
                     break;
                 case "right":
                     GameInfo.Instance.rightGlod += pd.getWinGold();
                     RightHead.GetComponent<headInfo>().setPlayerGold(GameInfo.Instance.rightGlod);
-                    Debug.Log("right 胡牌类型=" + pd.getHupai() + "输赢=" + pd.getWinGold() + "bot金币=" + GameInfo.Instance.rightGlod);
                     break;
                 case "top":
                     GameInfo.Instance.topGold += pd.getWinGold();
                     TopHead.GetComponent<headInfo>().setPlayerGold(GameInfo.Instance.topGold);
-                    Debug.Log("top 胡牌类型=" + pd.getHupai() + "输赢=" + pd.getWinGold() + "bot金币=" + GameInfo.Instance.topGold);
                     break;
                 case "left":
                     GameInfo.Instance.leftGold += pd.getWinGold();
-                    LeftHead.GetComponent<headInfo>().setPlayerGold(GameInfo.Instance.leftGold);
-                    Debug.Log("left 胡牌类型=" + pd.getHupai() + "输赢=" + pd.getWinGold() + "bot金币=" + GameInfo.Instance.leftGold);
                     break;
             }
         }
@@ -355,7 +410,6 @@ public class RoomView : MonoBehaviour {
 
         if (GameInfo.Instance.rightPositon>0&& GameInfo.Instance.rightName != "")
         {
-            Debug.Log("右边金币=" + GameInfo.Instance.rightGlod);
             RightHead.GetComponent<headInfo>().SetHeadIcon(int.Parse(GameInfo.Instance.rightIcon));
             RightHead.GetComponent<headInfo>().SetPlayerName(GameInfo.Instance.rightName);
             RightHead.GetComponent<headInfo>().setPlayerGold(GameInfo.Instance.rightGlod);
@@ -364,7 +418,6 @@ public class RoomView : MonoBehaviour {
         }
         if (GameInfo.Instance.topPostion > 0 && GameInfo.Instance.topName != "")
         {
-            Debug.Log("上边金币=" + GameInfo.Instance.topGold);
             TopHead.GetComponent<headInfo>().SetHeadIcon(int.Parse(GameInfo.Instance.topIcon));
             TopHead.GetComponent<headInfo>().SetPlayerName(GameInfo.Instance.topName);
             TopHead.GetComponent<headInfo>().setPlayerGold(GameInfo.Instance.topGold);
@@ -373,20 +426,17 @@ public class RoomView : MonoBehaviour {
         }
         if (GameInfo.Instance.leftPostion > 0 && GameInfo.Instance.leftName != "")
         {
-            Debug.Log("左边金币=" + GameInfo.Instance.leftGold);
             LeftHead.GetComponent<headInfo>().SetHeadIcon(int.Parse(GameInfo.Instance.leftIcon));
             LeftHead.GetComponent<headInfo>().SetPlayerName(GameInfo.Instance.leftName);
             LeftHead.GetComponent<headInfo>().setPlayerGold(GameInfo.Instance.leftGold);
             LeftHead.GetComponent<headInfo>().setHost(GameInfo.Instance.leftPostion);
             LeftHead.GetComponent<headInfo>().setZj(GameInfo.Instance.leftPostion);
         }
-        setCurrentPos(GameInfo.Instance.zhuangjia);
     }
 
     //当前操作方向指示
     public void setCurrentPos(int pos)
     {
-        Debug.Log("我的POSTION="+GameInfo.Instance.positon+"当前POS="+pos);
         if (GameInfo.Instance.positon==pos)
         {
             botPos.transform.gameObject.SetActive(true);
@@ -394,7 +444,7 @@ public class RoomView : MonoBehaviour {
             rightPos.gameObject.SetActive(false);
             topPos.gameObject.SetActive(false);
             leftPos.gameObject.SetActive(false);
-            lightMc.transform.localPosition = new Vector3(-594, -140, 0);
+            StartCoroutine(MoveToPosition(new Vector3(-588, -138, 0)));
             lightMc.GetComponent<GameAnimator>().Play();
         }
         else
@@ -406,36 +456,39 @@ public class RoomView : MonoBehaviour {
                     rightPos.gameObject.SetActive(true);
                     topPos.gameObject.SetActive(false);
                     leftPos.gameObject.SetActive(false);
-                    lightMc.transform.localPosition = new Vector3(594, 160, 0);
+                    StartCoroutine(MoveToPosition(new Vector3(588, 163, 0)));
                     lightMc.GetComponent<GameAnimator>().Play();
-                    Debug.Log("lightMc =" + lightMc.transform.localPosition);
                     break;
                 case "top":
                     botPos.gameObject.SetActive(false);
                     rightPos.gameObject.SetActive(false);
                     topPos.gameObject.SetActive(true);
                     leftPos.gameObject.SetActive(false);
-                    lightMc.transform.localPosition = new Vector3(330, 315, 0);
+                    StartCoroutine(MoveToPosition(new Vector3(330, 312, 0)));
                     lightMc.GetComponent<GameAnimator>().Play();
-                    Debug.Log("lightMc =" + lightMc.transform.localPosition);
                     break;
                 case "left":
                     botPos.gameObject.SetActive(false);
                     rightPos.gameObject.SetActive(false);
                     topPos.gameObject.SetActive(false);
                     leftPos.gameObject.SetActive(true);
-                    lightMc.transform.localPosition = new Vector3(-594, 160, 0);
+                    StartCoroutine(MoveToPosition(new Vector3(-588, 163, 0)));
                     lightMc.GetComponent<GameAnimator>().Play();
-                    Debug.Log("lightMc =" + lightMc.transform.localPosition);
                     break;
             }
         }
    
     }
 
+    private IEnumerator MoveToPosition(Vector3 vt3)
+    {
+        yield return new WaitForSeconds(0f);
+        lightMc.transform.localPosition = vt3;
+    }
 
 
-    void updateMjNum(int value)
+
+    public void updateMjNum(int value)
     {
 
         text_mjNum.text = value.ToString();
